@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASummonersTale", "ASummonersTale\ASummonersTale.csproj", "{7170E1A2-F7B5-4264-9501-539CC9AE658A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{0DA38399-C57A-4701-A3E3-A104E009396E}"
+	ProjectSection(SolutionItems) = preProject
+		Documents\Design Document.md = Documents\Design Document.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
