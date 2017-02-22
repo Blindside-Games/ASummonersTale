@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using ASummonersTale.Components.Input;
+using Microsoft.Xna.Framework.Input;
 
 namespace ASummonersTale.GameStates
 {
@@ -43,8 +45,11 @@ namespace ASummonersTale.GameStates
 
 		public override void Update(GameTime gameTime)
 		{
-			PlayerIndex index = PlayerIndex.One;
+			PlayerIndex? index = null;
 			elapsed += gameTime.ElapsedGameTime; 
+
+            if (InputHandler.KeyReleased(Keys.Space))
+                manager.ChangeState((MenuState)GameReference.StartMenuState, index);
 				
 			base.Update(gameTime);
 		}

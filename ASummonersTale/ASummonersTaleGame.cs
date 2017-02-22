@@ -1,4 +1,5 @@
-﻿using ASummonersTale.GameStates;
+﻿using ASummonersTale.Components.Input;
+using ASummonersTale.GameStates;
 using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.StateManager;
 using Microsoft.Xna.Framework;
@@ -22,13 +23,17 @@ namespace ASummonersTale
 
         private GameStateManager stateManager;
         private ISplashScreenState splashScreenState;
+        public ISplashScreenState SplashScreenState => splashScreenState;
+
+        private IMenuState startMenuState;
+        public IMenuState StartMenuState => startMenuState;
 
         public ASummonersTaleGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            screenRectangle = new Rectangle(0, 0, 1270, 780);
+            screenRectangle = new Rectangle(0, 0, 1280, 720);
 
             graphics.PreferredBackBufferHeight = screenRectangle.Height;
             graphics.PreferredBackBufferWidth = screenRectangle.Width;
@@ -36,7 +41,11 @@ namespace ASummonersTale
             stateManager = new GameStateManager(this);
             Components.Add(stateManager);
 
+            this.IsMouseVisible = true;
+
             splashScreenState = new SplashScreenState(this);
+            startMenuState = new MenuState(this);
+
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
         }
 
@@ -49,6 +58,8 @@ namespace ASummonersTale
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            Components.Add(new InputHandler(this));
 
             base.Initialize();
         }
