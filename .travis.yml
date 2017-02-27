@@ -1,12 +1,8 @@
 language: csharp
 solution: ASummonersTale.sln
-#before_install:
- # - wget http://www.monogame.net/releases/v3.4/MonoGame.Linux.zip
-  #- unzip MonoGame.Linux.zip
-  #- find * -type f -exec chmod 777 {} \; # lazy just make all executable
 install:
--cd HOME
--ls
+  - cd HOME
+  - ls
   - sudo apt-get install libopenal-dev mono-runtime
   - cd Downloads && chmod +x monogame-sdk.run
   - sudo ./monogame-sdk.run
