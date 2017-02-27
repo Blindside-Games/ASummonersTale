@@ -1,10 +1,8 @@
 language: csharp
 solution: ASummonersTale.sln
 install:
-  - cd HOME
-  - ls
   - sudo apt-get install libopenal-dev mono-runtime
-  - cd Downloads && chmod +x monogame-sdk.run
+  - cd ../Downloads && chmod +x monogame-sdk.run
   - sudo ./monogame-sdk.run
 script:
   - cd ./ASummonersTale/Content/Fonts
