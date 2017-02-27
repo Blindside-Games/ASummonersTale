@@ -45,6 +45,9 @@ before_build:
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
+  platform: 
+   - x86
+   - Release
 after_build:
   - ps: |
       $ErrorActionPreference = "Stop"

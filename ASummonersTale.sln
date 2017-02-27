@@ -18,14 +18,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Release64|x64 = Release64|x64
+		Release64|x86 = Release64|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Debug|x64.ActiveCfg = Debug|x64
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Debug|x64.Build.0 = Debug|x64
 		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Debug|x86.ActiveCfg = Debug|x86
 		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Debug|x86.Build.0 = Debug|x86
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release|x64.ActiveCfg = Release|x64
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release|x64.Build.0 = Release|x64
 		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release|x86.ActiveCfg = Release|x86
 		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release|x86.Build.0 = Release|x86
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release64|x64.ActiveCfg = Release64|x64
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release64|x64.Build.0 = Release64|x64
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release64|x86.ActiveCfg = Release64|x86
+		{7170E1A2-F7B5-4264-9501-539CC9AE658A}.Release64|x86.Build.0 = Release64|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
