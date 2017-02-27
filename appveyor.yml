@@ -43,7 +43,7 @@ branches:
 before_build:
   - if not exist output mkdir output
 build: 
-  project: source\ASummonersTale.sln
+  project: C:\ASummonersTale\ASummonersTale.sln
   verbosity: normal
 after_build:
   - ps: |
@@ -52,16 +52,16 @@ after_build:
       $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
       
       Write-Host "Copying the output files..."
-      copy source\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\MonoGame.Framework.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct2D1.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D9.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D11.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.DXGI.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
-      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\MonoGame.Framework.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct2D1.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D9.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D11.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.DXGI.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
+      copy C:\ASummonersTale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
       
 # artifacts
 artifacts: 
