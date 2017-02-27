@@ -50,15 +50,16 @@ namespace ASummonersTale.GameStates
 		    menuMusic = content.Load<Song>(@"Sounds\music");
 
 		    windEffectInstance = windSound.CreateInstance();
-		    windEffectInstance.IsLooped = true;
+            windEffectInstance.IsLooped = true;
             windEffectInstance.Play();
 
 		    MediaPlayer.IsRepeating = true;
+		    MediaPlayer.Volume = 0.7f;
             MediaPlayer.Play(menuMusic);
 
 		    cloud = content.Load<Texture2D>(@"Images\Miscellaneous\cloud");
 
-            clouds = new CloudComponent(cloud, GameReference);
+            clouds = new CloudComponent(1, cloud, GameReference);
 
 			Vector2 size = font.MeasureString(message);
 
@@ -87,7 +88,7 @@ namespace ASummonersTale.GameStates
 
 			GameReference.SpriteBatch.Draw(background, backgroundDestination, Color.White);
 
-            clouds.Draw(gameTime, GameReference.SpriteBatch);
+            clouds.Draw(1, gameTime, GameReference.SpriteBatch);
 
 			// This creates a pulsing colour effect
 			Color textColour = new Color(1f, 1f, 1f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
