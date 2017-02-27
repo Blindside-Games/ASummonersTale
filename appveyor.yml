@@ -63,6 +63,7 @@ after_build:
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
+  - C:\projects\asummonerstale\butler.exe login --identity=$(BUTLER_API_KEY)
   - C:\projects\asummonerstale\butler.exe push output\ blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
@@ -70,18 +71,7 @@ artifacts:
   - path: $(Output)
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
-    
-deploy:
-  - provider: GitHub
-    auth_token:
-      secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV
-    artifact: $(Output)\ASummonersTale-$(APPVEYOR_BUILD_VERSION)       
-    draft: false
-    prerelease: false
-    on:
-      branch: master                # release from master branch only
-      appveyor_repo_tag: true
-      
+          
 notifications:
 - provider: Email
   to:
