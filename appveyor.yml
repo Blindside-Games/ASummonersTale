@@ -42,6 +42,7 @@ branches:
     - master
 before_build:
   - if not exist output mkdir output
+  - nuget restore
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
