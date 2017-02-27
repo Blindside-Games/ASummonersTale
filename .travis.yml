@@ -8,7 +8,7 @@ install:
   # - sudo apt-get install -qq monodevelop libopenal-dev referenceassemblies-pcl ttf-mscorefonts-installer gtk-sharp2; # install needed packages for the monogame sdk
   # - sudo ./generate.sh && yes Y|sudo ./monogame-linux.run; # install monogame sdk
   - sudo apt-get install libopenal-dev mono-runtime
-  - chmod +x monogame-sdk.run
+  - cd Downloads && chmod +x monogame-sdk.run
   - sudo ./monogame-sdk.run
 script:
   - cd ./ASummonersTale/Content/Fonts
