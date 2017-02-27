@@ -11,5 +11,5 @@ script:
   - cd ./ASummonersTale/Content/Fonts
   - cp "./ASummonersTale/Content/Fonts/Trajan Pro Regular.ttf" "~/.fonts/Trajan Pro Regular.ttf"
   - fc-cache -f -v
-  - cd ./ASummonersTale/Content 
+  - cd .. 
   - mono /opt/monogame-pipeline/MGCB.exe /rebuild /@:"Content.mgcb" /outputDir:"../bin/Release/Content"
