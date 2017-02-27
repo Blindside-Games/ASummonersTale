@@ -8,5 +8,8 @@ install:
   - sudo apt-get install -qq monodevelop libopenal-dev referenceassemblies-pcl ttf-mscorefonts-installer gtk-sharp2; # install needed packages for the monogame sdk
   - sudo ./generate.sh && yes Y|sudo ./monogame-linux.run; # install monogame sdk
 script:
-  - cd Project/Content 
-  - mono /opt/monogame-pipeline/MGCB.exe /rebuild /@:"Content.mgcb" /outputDir:"../bin/Release/Content") 
+  - cd ./ASummonersTale/Content/Fonts
+  - cp "Trajan Pro Regular.ttf" "~/.fonts/Trajan Pro Regular.ttf"
+  - fc-cache -f -v
+  - cd .. 
+  - mono /opt/monogame-pipeline/MGCB.exe /rebuild /@:"Content.mgcb" /outputDir:"../bin/Release/Content"
