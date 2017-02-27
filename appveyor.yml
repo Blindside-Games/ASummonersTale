@@ -7,7 +7,7 @@ environment:
   BUTLER_API_KEY:
     secure: IKGbHJDnuaMLoqwSVxvD1f6kmzirMzElOInxIKG+tqDpXDCmqNn1NYyGYGovF1dD  
   Butler: C:\projects\asummonerstale\butler.exe
-  Output: C:\projects\asummonerstale\output\
+  Output: C:\projects\asummonerstale\output
   
 # versioning
 version: $(LibraryVersion).{build}
