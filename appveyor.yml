@@ -65,10 +65,10 @@ after_build:
       $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
       
       Write-Host "Copying the output files..."
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
+      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $env:Output
+      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $env:Output
     
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) -recurse
+      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $env:Output -recurse
       
   - $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
     
