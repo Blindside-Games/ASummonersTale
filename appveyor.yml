@@ -6,7 +6,8 @@ environment:
   LibraryVersion: 0.2.0
   BUTLER_API_KEY:
     secure: IKGbHJDnuaMLoqwSVxvD1f6kmzirMzElOInxIKG+tqDpXDCmqNn1NYyGYGovF1dD  
-  Butler: "C:\projects\asummonerstale\butler.exe"
+  Butler: C:\projects\asummonerstale\butler.exe
+  Output: C:\projects\asummonerstale\output
   
 # versioning
 version: $(LibraryVersion).{build}
@@ -19,7 +20,7 @@ assembly_info:
 
 # packages
 install:
-  - if not exist output mkdir "C:\projects\asummonerstale\output"
+  - if not exist output mkdir $(Output)
   - cinst 7zip -x86
   - cinst 7zip.commandline -x86
   - ps: |
@@ -64,17 +65,17 @@ after_build:
       $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
       
       Write-Host "Copying the output files..."
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe "C:\projects\asummonerstale\output"
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll "C:\projects\asummonerstale\output"
+      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
+      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
     
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content "C:\projects\asummonerstale\output" -recurse
+      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) -recurse
       
  - cmd:
    $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
-  - path: output\
+  - path: $(Output)
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
     
@@ -82,7 +83,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV
-    artifact: output\ASummonersTale-$(APPVEYOR_BUILD_VERSION)       
+    artifact: $(Output)\ASummonersTale-$(APPVEYOR_BUILD_VERSION)       
     draft: false
     prerelease: false
     on:
