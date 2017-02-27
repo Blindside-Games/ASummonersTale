@@ -70,7 +70,7 @@ after_build:
 
       Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $env:Output
     
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $env:Output -recurse
+      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content\ $env:Output -recurse
       
   - $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
     
