@@ -63,7 +63,7 @@ after_build:
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content \output -recurse
+      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content output\ -recurse
       
 # artifacts
 artifacts: 
