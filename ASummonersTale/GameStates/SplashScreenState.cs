@@ -90,7 +90,7 @@ namespace ASummonersTale.GameStates
             clouds.Draw(gameTime, GameReference.SpriteBatch);
 
 			// This creates a pulsing colour effect
-			Color textColour = new Color(0f, 0f, 0f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
+			Color textColour = new Color(1f, 1f, 1f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
 
 			GameReference.SpriteBatch.DrawString(font, message, position, textColour);
 

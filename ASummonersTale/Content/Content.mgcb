@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Fonts/InterfaceFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Fonts/InterfaceFont.spritefont
-
 #begin Images/Menu Screens/menuscreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
