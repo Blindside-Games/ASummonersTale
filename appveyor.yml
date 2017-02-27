@@ -1,0 +1,70 @@
+ # build variables
+os: Visual Studio 2015
+configuration: Release
+platform: Any CPU
+environment:
+  LibraryVersion: 0.2.0
+  
+# versioning
+version: $(LibraryVersion).{build}
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: $(LibraryVersion).0
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}-{branch}'
+
+# packages
+install:
+  - cinst 7zip -x86
+  - cinst 7zip.commandline -x86
+  - ps: |
+      $tempDir="$pwd\temp"
+      $installerUrl="http://www.monogame.net/releases/v3.4/MonoGameSetup.exe"
+      $installerFile="$tempDir\MonoGameSetup.zip"
+      $installerExtracted="$tempDir\MonoGameSetup"
+      $programFiles = "${env:ProgramFiles(x86)}\"
+      
+      Write-Host "Downloading MonoGame to $installerFile..."
+      If ((Test-Path  $tempDir) -eq 0) {
+          New-Item -ItemType Directory $tempDir
+      }
+      Invoke-WebRequest $installerUrl -OutFile $installerFile
+      
+      Write-Host "Extracting MonoGame to $installerExtracted..."
+      7z x -y $installerFile -o"$installerExtracted"
+      Write-Host "Copying the MonoGame content pipeline to $programFiles..."
+      Copy-Item "$installerExtracted\`$PROGRAMFILES\MSBuild\MonoGame" "$programFiles\MSBuild" -Recurse 
+
+# build
+branches:
+  only:
+    - master
+before_build:
+  - if not exist output mkdir output
+build: 
+  project: "source\ASummonersTale.sln" 
+  verbosity: normal
+after_build:
+  - ps: |
+      $ErrorActionPreference = "Stop"
+      
+      $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
+      
+      Write-Host "Copying the output files..."
+      copy source\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\MonoGame.Framework.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct2D1.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D9.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D11.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.DXGI.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
+      copy source\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
+      
+# artifacts
+artifacts: 
+  - path: output\
+    name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
+    type: zip 
