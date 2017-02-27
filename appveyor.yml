@@ -4,6 +4,10 @@ configuration: Release
 platform: x86
 environment:
   LibraryVersion: 0.2.0
+  BUTLER_API_KEY:
+    secure: IKGbHJDnuaMLoqwSVxvD1f6kmzirMzElOInxIKG+tqDpXDCmqNn1NYyGYGovF1dD  
+  Butler: C:\projects\asummonerstale\butler.exe
+  Output: C:\projects\asummonerstale\output
   
 # versioning
 version: $(LibraryVersion).{build}
@@ -16,6 +20,7 @@ assembly_info:
 
 # packages
 install:
+  - if not exist output mkdir $(Output)
   - cinst 7zip -x86
   - cinst 7zip.commandline -x86
   - ps: |
@@ -24,6 +29,9 @@ install:
       $installerFile="$tempDir\MonoGameSetup.zip"
       $installerExtracted="$tempDir\MonoGameSetup"
       $programFiles = "${env:ProgramFiles(x86)}\"
+      
+      $butlerDownload = "https://dl.itch.ovh/butler/windows-386/head/butler.exe"
+      $butlerInstallLocation = "$tempdir\butler.exe"
       
       Write-Host "Downloading MonoGame to $installerFile..."
       If ((Test-Path  $tempDir) -eq 0) {
@@ -35,40 +43,31 @@ install:
       7z x -y $installerFile -o"$installerExtracted"
       Write-Host "Copying the MonoGame content pipeline to $programFiles..."
       Copy-Item "$installerExtracted\`$PROGRAMFILES\MSBuild\MonoGame" "$programFiles\MSBuild" -Recurse 
-
+      
+      Write-Host "Downloading and installing butler"
+      
+      Invoke-WebRequest $butlerDownload -OutFile $butlerInstallLocation
+      
+      Copy-Item $butlerInstallLocation C:\projects\asummonerstale\butler.exe
 # build
 branches:
   only:
     - master
 before_build:
-  - if not exist output mkdir output
   - nuget restore
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
-after_build:
-  - ps: |
-      $ErrorActionPreference = "Stop"
-      
-      $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
-      
-      Write-Host "Copying the output files..."
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\MonoGame.Framework.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct2D1.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D9.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.Direct3D11.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.DXGI.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.RawInput.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
-      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content output\ -recurse
-      
+after_build:    
+  - echo Copying Files
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
+  - C:\projects\asummonerstale\butler.exe push output\ blindsidegames/a-summoners-tale:windows-alpha
+    
 # artifacts
 artifacts: 
-  - path: output\
+  - path: $(Output)
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
     
@@ -76,7 +75,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV
-    artifact: output\ASummonersTale-$(APPVEYOR_BUILD_VERSION)       
+    artifact: $(Output)\ASummonersTale-$(APPVEYOR_BUILD_VERSION)       
     draft: false
     prerelease: false
     on:
