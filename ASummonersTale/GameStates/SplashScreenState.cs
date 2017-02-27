@@ -2,19 +2,30 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using ASummonersTale.Components;
 using ASummonersTale.Components.Input;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace ASummonersTale.GameStates
 {
 	public class SplashScreenState : GameState, ISplashScreenState
 	{
-		Texture2D background;
+		Texture2D background, cloud;
 		Rectangle backgroundDestination;
 		SpriteFont font;
 		TimeSpan elapsed;
 		Vector2 position;
 		string message;
+
+	    private SoundEffect windSound;
+         
+        private Song menuMusic;
+
+	    private SoundEffectInstance windEffectInstance;
+
+	    private CloudComponent clouds;
 
 		public SplashScreenState(Game game) : base(game)
 		{
@@ -32,8 +43,22 @@ namespace ASummonersTale.GameStates
 
 		protected override void LoadContent()
 		{
-			background = content.Load<Texture2D>(@"Images\Menu Screens\titlescreen");
-			font = content.Load<SpriteFont>(@"Fonts\InterfaceFont");
+			background = content.Load<Texture2D>(@"Images\Menu Screens\A summoners tale");
+			font = content.Load<SpriteFont>(@"Fonts\Trajan");
+
+		    windSound = content.Load<SoundEffect>(@"Sounds\wind");
+		    menuMusic = content.Load<Song>(@"Sounds\music");
+
+		    windEffectInstance = windSound.CreateInstance();
+		    windEffectInstance.IsLooped = true;
+            windEffectInstance.Play();
+
+		    MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(menuMusic);
+
+		    cloud = content.Load<Texture2D>(@"Images\Miscellaneous\cloud");
+
+            clouds = new CloudComponent(cloud, GameReference);
 
 			Vector2 size = font.MeasureString(message);
 
@@ -48,8 +73,10 @@ namespace ASummonersTale.GameStates
 			PlayerIndex? index = null;
 			elapsed += gameTime.ElapsedGameTime; 
 
+            clouds.Update(gameTime);
+
             if (InputHandler.KeyReleased(Keys.Space))
-                manager.ChangeState((MenuState)GameReference.StartMenuState, index);
+                //manager.ChangeState((MenuState)GameReference.StartMenuState, index);
 				
 			base.Update(gameTime);
 		}
@@ -60,8 +87,10 @@ namespace ASummonersTale.GameStates
 
 			GameReference.SpriteBatch.Draw(background, backgroundDestination, Color.White);
 
+            clouds.Draw(gameTime, GameReference.SpriteBatch);
+
 			// This creates a pulsing colour effect
-			Color textColour = new Color(1f, 1f, 1f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
+			Color textColour = new Color(0f, 0f, 0f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
 
 			GameReference.SpriteBatch.DrawString(font, message, position, textColour);
 
