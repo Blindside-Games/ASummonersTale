@@ -77,12 +77,11 @@ deploy:
   release: ASummonersTale-v0.0.1-alpha
   description: "Initial alpha release of A Summoner's Tale"
   provider: GitHub
-  tag: v0.0.1-alpha
+  #tag: v0.0.1-alpha
   auth_token:
     secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV # your encrypted token from GitHub
   artifact: output\ASummonersTale-$(APPVEYOR_BUILD_VERSION)        # upload all NuGet packages to release assets
   draft: false
   prerelease: true
   on:
-	branch: master
-        # deploy on tag push only
+    branch: master
