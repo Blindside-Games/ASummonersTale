@@ -70,8 +70,7 @@ after_build:
     
       Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) -recurse
       
- - cmd:
-   $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
+  - $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
