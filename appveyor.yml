@@ -1,7 +1,7 @@
  # build variables
 os: Visual Studio 2015
 configuration: Release
-platform: Any CPU
+platform: x86
 environment:
   LibraryVersion: 0.2.0
   
@@ -45,9 +45,6 @@ before_build:
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
-  platform: 
-   - x86
-   - Release
 after_build:
   - ps: |
       $ErrorActionPreference = "Stop"
