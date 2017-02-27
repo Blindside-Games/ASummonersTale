@@ -65,12 +65,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\Menu Screens\A summoners tale.png" />
+    <Content Include="Content\Images\Menu Screens\menuscreen.png" />
+    <Content Include="Content\Images\Menu Screens\titlescreen.png" />
+    <Content Include="Content\Images\Miscellaneous\cloud.png" />
+    <Content Include="Content\Images\Miscellaneous\woodenbutton.png" />
+    <Content Include="Content\Sounds\music.mp3" />
+    <Content Include="Content\Sounds\wind.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Content\Fonts\InterfaceFont.spritefont" />
+    <None Include="Content\Fonts\Trajan.spritefont" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
