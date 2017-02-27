@@ -73,7 +73,6 @@ artifacts:
     type: zip 
     
 deploy:
-# Deploy to GitHub Releases
   - provider: GitHub
     auth_token:
       secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV
