@@ -73,6 +73,7 @@ artifacts:
     type: zip 
 
 deploy:
+  #appveyor_repo_tag: true    
   release: ASummonersTale-v0.0.1-alpha
   description: "Initial alpha release of A Summoner's Tale"
   provider: GitHub
@@ -83,4 +84,5 @@ deploy:
   draft: false
   prerelease: true
   on:
-    appveyor_repo_tag: true        # deploy on tag push only
+	branch: master
+        # deploy on tag push only
