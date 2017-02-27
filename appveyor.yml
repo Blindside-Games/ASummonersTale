@@ -71,7 +71,8 @@ artifacts:
   - path: output\
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
-
+    
+deploy:
 # Deploy to GitHub Releases
   - provider: GitHub
     auth_token:
