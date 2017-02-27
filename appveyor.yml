@@ -58,20 +58,11 @@ before_build:
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
-after_build:
-  - ps: |
-      $ErrorActionPreference = "Stop"
-      
-      $nugetVersion = "$env:APPVEYOR_BUILD_VERSION"
-      
-      Write-Host "Copying the output files..."
-
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $env:Output
-
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $env:Output
-    
-      Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content\ $env:Output -recurse
-      
+after_build:    
+  - echo Copying Files
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $Output)
   - $(Butler) push blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
