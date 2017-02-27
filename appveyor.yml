@@ -61,6 +61,7 @@ after_build:
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.DXGI.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll output\
+      copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.RawInput.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XAudio2.dll output\
       copy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\SharpDX.XInput.dll output\
       Copy-Item C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content output\ -recurse
@@ -75,11 +76,12 @@ deploy:
   release: ASummonersTale-v0.0.1-alpha
   description: "Initial alpha release of A Summoner's Tale"
   provider: GitHub
+  tag: v0.0.1-alpha
   auth_token:
     secure: LKf3G1SYKih8vIVOX9WmOdSW9CDwAqxrCBgVzyZP+2EzNaqJTOn6GcpmliAXJnMV # your encrypted token from GitHub
   artifact: output\ASummonersTale-$(APPVEYOR_BUILD_VERSION)        # upload all NuGet packages to release assets
   draft: false
-  prerelease: false
+  prerelease: true
   on:
     branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
