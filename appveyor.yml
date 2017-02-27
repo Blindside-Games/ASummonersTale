@@ -43,7 +43,7 @@ branches:
 before_build:
   - if not exist output mkdir output
 build: 
-  project: "source\ASummonersTale.sln" 
+  project: source\ASummonersTale.sln
   verbosity: normal
 after_build:
   - ps: |
