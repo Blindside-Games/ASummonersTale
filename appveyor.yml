@@ -20,7 +20,7 @@ assembly_info:
 
 # packages
 install:
-  - if not exist output mkdir $(Output)
+  - if not exist output mkdir C:\projects\asummonerstale\output
   - cinst 7zip -x86
   - cinst 7zip.commandline -x86
   - ps: |
@@ -60,16 +60,16 @@ build:
   verbosity: normal
 after_build:   
   - echo Copying Files
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe C:\projects\asummonerstale\output
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll C:\projects\asummonerstale\output
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content C:\projects\asummonerstale\output /E
   - cd C:\projects\asummonerstale\
   - dir
   - butler push \output blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
-  - path: $(Output)
+  - path: C:\projects\asummonerstale\output
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
          
