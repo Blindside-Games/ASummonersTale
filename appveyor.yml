@@ -58,12 +58,14 @@ before_build:
 build: 
   project: C:\projects\asummonerstale\ASummonersTale.sln
   verbosity: normal
-after_build:    
+after_build:   
   - echo Copying Files
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
-  - C:\projects\asummonerstale\butler.exe push \output blindsidegames/a-summoners-tale:windows-alpha
+  - ps: | 
+      7z a C:\projects\asummonerstale\a-summoners-tale-$env:APPVEYOR_BUILD_VERSION.zip $(Output) -r
+  - C:\projects\asummonerstale\butler.exe push C:\projects\asummonerstale\a-summoners-tale-$(APPVEYOR_BUILD_VERSION).zip blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
