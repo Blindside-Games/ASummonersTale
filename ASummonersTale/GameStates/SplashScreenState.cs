@@ -12,7 +12,7 @@ namespace ASummonersTale.GameStates
 {
 	public class SplashScreenState : GameState, ISplashScreenState
 	{
-		Texture2D background, cloud;
+		Texture2D background, foreground, cloud;
 		Rectangle backgroundDestination;
 		SpriteFont font;
 		TimeSpan elapsed;
@@ -43,7 +43,8 @@ namespace ASummonersTale.GameStates
 
 		protected override void LoadContent()
 		{
-			background = content.Load<Texture2D>(@"Images\Menu Screens\A summoners tale");
+			background = content.Load<Texture2D>(@"Images\Menu Screens\splash-screen-bg");
+		    foreground = content.Load<Texture2D>(@"Images\Menu Screens\splash-screen-fg");
 			font = content.Load<SpriteFont>(@"Fonts\Trajan");
 
 		    windSound = content.Load<SoundEffect>(@"Sounds\wind");
@@ -89,6 +90,8 @@ namespace ASummonersTale.GameStates
 			GameReference.SpriteBatch.Draw(background, backgroundDestination, Color.White);
 
             clouds.Draw(1, gameTime, GameReference.SpriteBatch);
+
+            GameReference.SpriteBatch.Draw(foreground, backgroundDestination, Color.White);
 
 			// This creates a pulsing colour effect
 			Color textColour = new Color(1f, 1f, 1f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
