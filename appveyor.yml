@@ -65,7 +65,7 @@ after_build:
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
   - ps: | 
       7z a C:\projects\asummonerstale\a-summoners-tale-$env:APPVEYOR_BUILD_VERSION.zip $(Output) -r
-  - C:\projects\asummonerstale\butler.exe push C:\projects\asummonerstale\a-summoners-tale-$(APPVEYOR_BUILD_VERSION).zip blindsidegames/a-summoners-tale:windows-alpha
+  - C:\projects\asummonerstale\butler.exe push C:/projects/asummonerstale/a-summoners-tale-$(APPVEYOR_BUILD_VERSION).zip blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
