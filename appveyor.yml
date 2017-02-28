@@ -8,7 +8,7 @@ environment:
     secure: IKGbHJDnuaMLoqwSVxvD1f6kmzirMzElOInxIKG+tqDpXDCmqNn1NYyGYGovF1dD  
   Butler: C:\projects\asummonerstale\butler.exe
   Output: C:\projects\asummonerstale\output
-  
+ 
 # versioning
 version: $(LibraryVersion).{build}
 assembly_info:
@@ -20,7 +20,7 @@ assembly_info:
 
 # packages
 install:
-  - if not exist output mkdir $(Output)
+  - if not exist output mkdir C:\projects\asummonerstale\output
   - cinst 7zip -x86
   - cinst 7zip.commandline -x86
   - ps: |
@@ -60,16 +60,15 @@ build:
   verbosity: normal
 after_build:   
   - echo Copying Files
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe $(Output)
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
-  - ps: | 
-      7z a C:\projects\asummonerstale\a-summoners-tale-$env:APPVEYOR_BUILD_VERSION.zip $(Output) -r
-  - C:\projects\asummonerstale\butler.exe push C:\projects\asummonerstale\a-summoners-tale-$(APPVEYOR_BUILD_VERSION).zip blindsidegames/a-summoners-tale:windows-alpha
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe C:\projects\asummonerstale\output
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll C:\projects\asummonerstale\output
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content C:\projects\asummonerstale\output /E
+  - cd C:\projects\asummonerstale\
+  - butler push C:\projects\asummonerstale\output blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
 artifacts: 
-  - path: $(Output)
+  - path: \output
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
          
@@ -80,3 +79,7 @@ notifications:
   on_build_success: true
   on_build_failure: false
   on_build_status_changed: false
+- provider: Slack
+  auth_token:
+    secure: ppppUSyvFMB1AVmaoG/Jaixwh4RBlrxPdUgWkkvxJfa5TF2Wz9fyj6jGpeqavjOu5VbrfIHS7x6AOv8bgYc8bGbhtBRrNs1Yy0fCLeSuZWU=
+  channel: '#general'
