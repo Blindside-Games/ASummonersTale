@@ -64,6 +64,7 @@ after_build:
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll $(Output)
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content $(Output) /E
   - cd C:\projects\asummonerstale\
+  - dir
   - butler push \output blindsidegames/a-summoners-tale:windows-alpha
     
 # artifacts
