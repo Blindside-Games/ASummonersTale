@@ -69,7 +69,7 @@ after_build:
     
 # artifacts
 artifacts: 
-  - path: C:\projects\asummonerstale\output
+  - path: \output
     name: ASummonersTale-$(APPVEYOR_BUILD_VERSION) 
     type: zip 
          
