@@ -40,8 +40,6 @@ namespace ASummonersTale.Components.Clouds
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-           
-
             foreach (var cloudLayer in layers)
             {
                 cloudLayer.Update(delta);  
@@ -54,7 +52,7 @@ namespace ASummonersTale.Components.Clouds
         {
             foreach (var cloud in layers[layer-1].Clouds)
             {
-                spriteBatch.Draw(Cloud.Texture, cloud.Position, Color.White);
+                spriteBatch.Draw(Cloud.Texture, cloud.Position, null, Color.White, 0, Vector2.Zero, 1.0f/layers[layer-1].LayerDepth, SpriteEffects.None, 0);
             }
         }
     }

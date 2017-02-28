@@ -19,18 +19,16 @@ namespace ASummonersTale.Components.Clouds
 
             private readonly int MaxClouds = 5;
 
-            private readonly int CloudSpawnTimer = 7;
+            private  int CloudSpawnTimer = 7;
 
             private int layerDepth, seed;
+
+            internal int LayerDepth => layerDepth; 
 
             public CloudLayer(int layerDepth)
             {
                 Clouds = new List<Cloud>();
-                random = new Random();
-
-                seed = random.Next(0, 10);
-
-
+                random = new Random(layerDepth);
 
                 this.layerDepth = layerDepth;
 
@@ -41,9 +39,11 @@ namespace ASummonersTale.Components.Clouds
             {
                 CurrentCloudSpawn += delta;
 
-                if (Clouds.Count < MaxClouds && ((int)CurrentCloudSpawn == CloudSpawnTimer))
+                if (Clouds.Count < MaxClouds && ((int)CurrentCloudSpawn >= CloudSpawnTimer))
                 {
                     SpawnCloud();
+
+                    CloudSpawnTimer = random.Next(4, 7);
 
                     CurrentCloudSpawn = 0;
                 }

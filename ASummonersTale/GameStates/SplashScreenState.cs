@@ -56,7 +56,6 @@ namespace ASummonersTale.GameStates
 			windEffectInstance.Play();
 
 			MediaPlayer.IsRepeating = true;
-			MediaPlayer.Volume = 0.7f;
 			MediaPlayer.Play(menuMusic);
 
 			cloud = content.Load<Texture2D>(@"Images\Miscellaneous\cloud");
