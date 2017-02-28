@@ -62,7 +62,7 @@ after_build:
   - echo Copying Files
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\ASummonersTale.exe C:\projects\asummonerstale\output
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll C:\projects\asummonerstale\output
-  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content C:\projects\asummonerstale\output  /T /E
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content C:\projects\asummonerstale\output  /E
   - cd C:\projects\asummonerstale\
   - butler -i $(BUTLER_API_KEY)
   - butler push C:\projects\asummonerstale\output blindsidegames/a-summoners-tale:windows-alpha
