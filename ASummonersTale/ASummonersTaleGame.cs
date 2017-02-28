@@ -44,7 +44,7 @@ namespace ASummonersTale
             this.IsMouseVisible = true;
 
             splashScreenState = new SplashScreenState(this);
-            startMenuState = new MenuState(this);
+            //startMenuState = new MenuState(this);
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
         }
