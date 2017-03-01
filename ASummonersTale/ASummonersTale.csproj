@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>icon2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release64|x86' ">
     <OutputPath>bin\x86\Release 64\</OutputPath>
@@ -507,6 +507,7 @@
     <Content Include="Content\Sounds\music.mp3" />
     <Content Include="Content\Sounds\wind.wav" />
     <Content Include="Icon.ico" />
+    <Content Include="icon2.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
