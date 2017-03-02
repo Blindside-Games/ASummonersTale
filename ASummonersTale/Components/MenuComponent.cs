@@ -66,6 +66,8 @@ namespace ASummonersTale.Components
             normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
             activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
             inactiveTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_inactive");
+
+            buttonIndexChanged = gameReference.Content.Load<SoundEffect>(@"Sounds\button_sound");
         }
 
         public MenuComponent(SpriteFont font, string[] menuItems, ASummonersTaleGame gameReference) : this(font, gameReference)
@@ -105,6 +107,8 @@ namespace ASummonersTale.Components
             {
                 selectedIndex--;
 
+                buttonIndexChanged.Play();
+
                 // Wrap around
                 if (selectedIndex < 0)
                     selectedIndex = menuItems.Count - 1;
@@ -112,6 +116,8 @@ namespace ASummonersTale.Components
             else if (!mouseOver && InputHandler.KeyReleased(Keys.Down))
             {
                 selectedIndex++;
+
+                buttonIndexChanged.Play();
 
                 if (selectedIndex > menuItems.Count - 1)
                     selectedIndex = 0;
