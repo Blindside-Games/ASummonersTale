@@ -25,14 +25,13 @@ namespace ASummonersTale.GameStates
 
         protected override void LoadContent()
         {
-            font = Game.Content.Load<SpriteFont>(@"Fonts\InterfaceFont");
-            background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
+            font = Game.Content.Load<SpriteFont>(@"Fonts\trajan");
+            //background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
+           
 
-            Texture2D buttonTexture = Game.Content.Load<Texture2D>(@"Images\Miscellaneous\woodenbutton");
+            string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT"};
 
-            string[] menuItems = {"NEW GAME", "CONTINUE", "OPTIONS", "EXIT"};
-
-            menuComponent = new MenuComponent(font, buttonTexture, menuItems);
+            menuComponent = new MenuComponent(font, menuItems, GameReference);
 
             menuComponent.Position = new Vector2(1200 - menuComponent.Width, 90);
 
@@ -45,6 +44,7 @@ namespace ASummonersTale.GameStates
 
             if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter))
             {
+                // TODO: Implement next states
                 if (menuComponent.SelectedIndex < 3)
                     InputHandler.Flush();
                 else
@@ -56,15 +56,17 @@ namespace ASummonersTale.GameStates
 
         public override void Draw(GameTime gameTime)
         {
-            GameReference.SpriteBatch.Begin();
+            // TODO: Uncomment when art is ready
+
+            /*GameReference.SpriteBatch.Begin();
 
             GameReference.SpriteBatch.Draw(background, Vector2.Zero, Color.White);
 
-            GameReference.SpriteBatch.End();
+            GameReference.SpriteBatch.End();*/
 
             base.Draw(gameTime);
 
-            GameReference.SpriteBatch.Begin();
+            GameReference.SpriteBatch.Begin(rasterizerState: GameReference.RasterizerState);
 
             menuComponent.Draw(gameTime, GameReference.SpriteBatch);
 

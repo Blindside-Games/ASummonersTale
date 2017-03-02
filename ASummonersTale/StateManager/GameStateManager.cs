@@ -13,15 +13,9 @@ namespace ASummonersTale.StateManager
 		private const int startDrawOrder = 5000, drawOrderIncrement = 50;
 		private int drawOrder;
 
-		public AbstractGameState CurrentState
-		{
-			get
-			{
-				return states.Peek();
-			}
-		}
+		public AbstractGameState CurrentState => states.Peek();
 
-		public event EventHandler StateChanged;
+	    public event EventHandler StateChanged;
 
 		public GameStateManager(Game game) : base(game)
 		{
@@ -53,13 +47,13 @@ namespace ASummonersTale.StateManager
 
 		public void PopState()
 		{
-			if (states.Count != 0)
-			{
-				RemoveState();
+		    if (states.Count == 0)
+                return;
 
-				drawOrder -= drawOrderIncrement;
-				OnStateChanged();
-			}
+		    RemoveState();
+
+		    drawOrder -= drawOrderIncrement;
+		    OnStateChanged();
 		}
 
 		public bool ContainsState(AbstractGameState state) => states.Contains(state);

@@ -28,11 +28,14 @@ namespace ASummonersTale
         private IMenuState startMenuState;
         public IMenuState StartMenuState => startMenuState;
 
+        public RasterizerState RasterizerState;
+
         public ASummonersTaleGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            
             screenRectangle = new Rectangle(0, 0, 1280, 720);
 
             graphics.PreferredBackBufferHeight = screenRectangle.Height;
@@ -44,9 +47,16 @@ namespace ASummonersTale
             this.IsMouseVisible = true;
 
             splashScreenState = new SplashScreenState(this);
-            //startMenuState = new MenuState(this);
+            startMenuState = new MenuState(this);
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
+        }
+
+        private void EnableAntiAliasing()
+        {
+            graphics.PreferMultiSampling = true;
+
+            RasterizerState = new RasterizerState { MultiSampleAntiAlias = true };
         }
 
         /// <summary>
@@ -106,7 +116,7 @@ namespace ASummonersTale
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 

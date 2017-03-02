@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ASummonersTale.Components.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -46,7 +47,9 @@ namespace ASummonersTale.Components
             set { highlightedColour = value; }
         }
 
-        private Texture2D texture;
+        private Texture2D normalTexture, activeTexture, inactiveTexture;
+
+        private SoundEffect buttonIndexChanged;
 
         private Vector2 position;
         public Vector2 Position
@@ -55,15 +58,17 @@ namespace ASummonersTale.Components
             set { position = value; }
         }
 
-        public MenuComponent(SpriteFont font, Texture2D texture)
+        public MenuComponent(SpriteFont font,  ASummonersTaleGame gameReference)
         {
             mouseOver = false;
 
             this.font = font;
-            this.texture = texture;
+            normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
+            activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
+            inactiveTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_inactive");
         }
 
-        public MenuComponent(SpriteFont font, Texture2D texture, string[] menuItems) : this(font, texture)
+        public MenuComponent(SpriteFont font, string[] menuItems, ASummonersTaleGame gameReference) : this(font, gameReference)
         {
             selectedIndex = 0;
 
@@ -84,7 +89,7 @@ namespace ASummonersTale.Components
             for (int i = 0; i < menuItems.Count; i++)
             {
                 // Create a button rectangle 
-                buttonRectangle = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, texture.Width, texture.Height);
+                buttonRectangle = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, normalTexture.Width, normalTexture.Height);
 
                 // If the mouse is inside the button's rectangle
                 if (buttonRectangle.Contains(point))
@@ -93,7 +98,7 @@ namespace ASummonersTale.Components
                     mouseOver = true;
                 }
 
-                menuPosition.Y += texture.Height + 50;
+                menuPosition.Y += normalTexture.Height + 50;
             }
 
             if (!mouseOver && InputHandler.KeyReleased(Keys.Up))
@@ -117,22 +122,22 @@ namespace ASummonersTale.Components
         {
             Vector2 menuPosition = position;
 
-            Color itemColour;
+            Texture2D drawTexture;
 
             for (int i = 0; i < menuItems.Count; i++)
             {
-                itemColour = (i == selectedIndex) ? highlightedColour : normalColour;
+                drawTexture = (i == selectedIndex) ? activeTexture : normalTexture; 
                 
-                spriteBatch.Draw(texture, menuPosition, Color.White);
+                spriteBatch.Draw(drawTexture, menuPosition, Color.White);
 
-                Vector2 textSize = font.MeasureString(menuItems[i]);
+                Vector2 textSize = font.MeasureString(menuItems[i]) / 2;
                 Vector2 textPosition = menuPosition +
-                                       new Vector2((int) (texture.Width - textSize.X) / 2,
-                                           (int) (texture.Height - textSize.Y) / 2);
+                                       new Vector2((normalTexture.Width - textSize.X) / 2,
+                                            (normalTexture.Height - textSize.Y) / 2 + 7);
 
-                spriteBatch.DrawString(font, menuItems[i], textPosition, itemColour);
+                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.5f, 0.5f), SpriteEffects.None, 0 );
 
-                menuPosition.Y += texture.Height + 50;
+                menuPosition.Y += normalTexture.Height + 50;
             }
         }
 
@@ -148,7 +153,7 @@ namespace ASummonersTale.Components
 
         private void MeasureMenu()
         {
-            width = texture.Width;
+            width = normalTexture.Width;
             height = 0;
 
             foreach (var s in menuItems)
@@ -158,7 +163,7 @@ namespace ASummonersTale.Components
                 if (size.X > width)
                     width = (int)size.X;
 
-                height += texture.Height + 50;
+                height += normalTexture.Height + 50;
             }
 
             height -= 50;

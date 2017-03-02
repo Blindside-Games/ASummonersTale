@@ -60,12 +60,12 @@ namespace ASummonersTale.GameStates
 
 			cloud = content.Load<Texture2D>(@"Images\Miscellaneous\cloud");
 
-			clouds = new CloudComponent(2, cloud, GameReference);
+			clouds = new CloudComponent(2, cloud, GameReference, 35, 50);
 
 			Vector2 size = font.MeasureString(message);
 
-			position = new Vector2((ASummonersTaleGame.ScreenRectangle.Width - size.X) / 2,
-									ASummonersTaleGame.ScreenRectangle.Bottom - 50 - font.LineSpacing);
+			position = new Vector2((ASummonersTaleGame.ScreenRectangle.Width - size.X),
+									ASummonersTaleGame.ScreenRectangle.Bottom - 50 - font.LineSpacing) ;
 
 			base.LoadContent();
 		}
@@ -78,14 +78,14 @@ namespace ASummonersTale.GameStates
 			clouds.Update(gameTime);
 
 			if (InputHandler.KeyReleased(Keys.Space))
-				//manager.ChangeState((MenuState)GameReference.StartMenuState, index);
+				manager.ChangeState((MenuState)GameReference.StartMenuState, index);
 				
 			base.Update(gameTime);
 		}
 
 		public override void Draw(GameTime gameTime)
 		{
-			GameReference.SpriteBatch.Begin();
+			GameReference.SpriteBatch.Begin(rasterizerState: GameReference.RasterizerState);
 
 			GameReference.SpriteBatch.Draw(background, backgroundDestination, Color.White);
 
@@ -98,7 +98,7 @@ namespace ASummonersTale.GameStates
 			// This creates a pulsing colour effect
 			Color textColour = new Color(1f, 1f, 1f) * (float)Math.Abs(Math.Sin(elapsed.TotalSeconds * 2));
 
-			GameReference.SpriteBatch.DrawString(font, message, position, textColour);
+			GameReference.SpriteBatch.DrawString(font, message, position, textColour, 0f, Vector2.Zero, new Vector2(0.5f, 0.5f), SpriteEffects.None, 0);
 
 			GameReference.SpriteBatch.End();
 

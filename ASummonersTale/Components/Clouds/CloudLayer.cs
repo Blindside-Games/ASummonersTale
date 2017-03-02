@@ -1,81 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace ASummonersTale.Components.Clouds
 {
     internal class CloudLayer
     {
-            internal List<Cloud> Clouds;
+        private readonly int cloudX;
 
-            private readonly int cloudX;
+        private readonly int MaxClouds = 5;
 
-            public float CurrentCloudSpawn = 6;
+        private readonly Random random;
 
-            private readonly Random random;
+        private readonly int speed;
+        internal List<Cloud> Clouds;
 
-            private readonly int MaxClouds = 5;
+        private int CloudSpawnTimer = 7;
 
-            private  int CloudSpawnTimer = 7;
+        public float CurrentCloudSpawn = 6;
 
-            private int layerDepth, seed;
+        private int seed;
 
-            internal int LayerDepth => layerDepth; 
+        public CloudLayer(int layerDepth, int layerSpeed)
+        {
+            Clouds = new List<Cloud>();
+            random = new Random(layerDepth);
 
-            public CloudLayer(int layerDepth)
+            LayerDepth = layerDepth;
+            speed = layerSpeed;
+
+            cloudX = -Cloud.Texture.Width;
+        }
+
+        internal int LayerDepth { get; }
+
+        public void Update(float delta)
+        {
+            CurrentCloudSpawn += delta;
+
+            if (Clouds.Count < MaxClouds && (int) CurrentCloudSpawn >= CloudSpawnTimer)
             {
-                Clouds = new List<Cloud>();
-                random = new Random(layerDepth);
+                SpawnCloud();
 
-                this.layerDepth = layerDepth;
+                CloudSpawnTimer = random.Next(4, 7);
 
-                cloudX = -Cloud.Texture.Width;
+                CurrentCloudSpawn = 0;
             }
 
-            public void Update(float delta)
+            foreach (var cloud in Clouds)
             {
-                CurrentCloudSpawn += delta;
+                var newX = cloud.Position.X + speed * delta;
 
-                if (Clouds.Count < MaxClouds && ((int)CurrentCloudSpawn >= CloudSpawnTimer))
-                {
-                    SpawnCloud();
+                cloud.Position = new Vector2(newX, cloud.Position.Y);
 
-                    CloudSpawnTimer = random.Next(4, 7);
-
-                    CurrentCloudSpawn = 0;
-                }
-
-                foreach (Cloud cloud in Clouds)
-                {
-                    float newX = cloud.Position.X + (Cloud.Speed * delta);
-
-                    cloud.Position = new Vector2(newX, cloud.Position.Y);
-
-                    if (cloud.Position.X >= ASummonersTaleGame.ScreenRectangle.Width)
-                        cloud.ShouldBeDestroyed = true;
-                }
-            }
-
-            public void RemoveInactiveClouds()
-            {
-                Clouds.RemoveAll(c => c.ShouldBeDestroyed);
-            }
-
-            public void SpawnCloud()
-            {
-                int cloudY = random.Next(CloudComponent.MinHeight, CloudComponent.MaxHeight);
-
-                Cloud cloud = new Cloud
-                {
-                    Position = new Vector2(cloudX, cloudY),
-                    ShouldBeDestroyed = false
-                };
-
-                Clouds.Add(cloud);
+                if (cloud.Position.X >= ASummonersTaleGame.ScreenRectangle.Width)
+                    cloud.ShouldBeDestroyed = true;
             }
         }
 
+        public void RemoveInactiveClouds()
+        {
+            Clouds.RemoveAll(c => c.ShouldBeDestroyed);
+        }
+
+        public void SpawnCloud()
+        {
+            var cloudY = random.Next(CloudComponent.MinHeight, CloudComponent.MaxHeight);
+
+            var cloud = new Cloud
+            {
+                Position = new Vector2(cloudX, cloudY),
+                ShouldBeDestroyed = false
+            };
+
+            Clouds.Add(cloud);
+        }
     }
+}

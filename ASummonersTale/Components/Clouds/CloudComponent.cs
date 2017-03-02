@@ -21,7 +21,7 @@ namespace ASummonersTale.Components.Clouds
 
         public const float CloudSpawnTimer = 7;
 
-        public CloudComponent(int layers, Texture2D texture, ASummonersTaleGame game)
+        public CloudComponent(int layers, Texture2D texture, ASummonersTaleGame game, params int[] layerSpeeds )
         {
             Cloud.Texture = texture;
 
@@ -33,7 +33,7 @@ namespace ASummonersTale.Components.Clouds
             screenWidth = game.GraphicsDevice.Adapter.CurrentDisplayMode.Width;
 
             for (int i = 0, layerDepth = 1; i < layers; i++, layerDepth++)
-                this.layers.Add(new CloudLayer(layerDepth));
+                this.layers.Add(new CloudLayer(layerDepth, layerSpeeds[i]));
         }
 
         public void Update(GameTime gameTime)
