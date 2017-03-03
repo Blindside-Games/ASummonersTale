@@ -71,7 +71,7 @@ namespace ASummonersTale.Components
 
         public MenuComponent(SpriteFont font, string[] menuItems, ASummonersTaleGame gameReference) : this(font, gameReference)
         {
-            selectedIndex = 0;
+            selectedIndex = ASummonersTaleGame.SavedGamePresent ? 0 : 1;
 
             this.menuItems.AddRange(menuItems);
 
@@ -97,8 +97,6 @@ namespace ASummonersTale.Components
                 // If the mouse is inside the button's rectangle
                 if (currentButtonRectangle.Contains(point))
                 {
-                    
-
                     if (buttonIndexChangedEffectInstance.State == SoundState.Stopped)
                         buttonIndexChangedEffectInstance.Play();
 
@@ -116,7 +114,7 @@ namespace ASummonersTale.Components
                 buttonIndexChangedEffectInstance.Play();
 
                 // Wrap around
-                if (selectedIndex < 0)
+                if (selectedIndex < 0 || (selectedIndex == 0 && !ASummonersTaleGame.SavedGamePresent))
                     selectedIndex = menuItems.Count - 1;
             }
             else if (!mouseOver && InputHandler.KeyReleased(Keys.Down))
@@ -126,7 +124,7 @@ namespace ASummonersTale.Components
                 buttonIndexChangedEffectInstance.Play();
 
                 if (selectedIndex > menuItems.Count - 1)
-                    selectedIndex = 0;
+                    selectedIndex = ASummonersTaleGame.SavedGamePresent ? 0 : 1;
             }
         }
 
@@ -139,6 +137,9 @@ namespace ASummonersTale.Components
             for (int i = 0; i < menuItems.Count; i++)
             {
                 drawTexture = (i == selectedIndex) ? activeTexture : normalTexture;
+
+                if (!ASummonersTaleGame.SavedGamePresent && i == 0)
+                    drawTexture = inactiveTexture;
 
                 spriteBatch.Draw(drawTexture, menuPosition, Color.White);
 

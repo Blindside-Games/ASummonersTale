@@ -85,6 +85,8 @@
     <Compile Include="Components\Input\InputHandler.cs" />
     <Compile Include="Components\Input\MouseButton.cs" />
     <Compile Include="Components\MenuComponent.cs" />
+    <Compile Include="Components\Settings\RegistryConfiguration.cs" />
+    <Compile Include="Components\Settings\Settings.cs" />
     <Compile Include="GameStates\AbstractGameState.cs" />
     <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\Interfaces\IGameState.cs" />
@@ -506,7 +508,6 @@
     <Content Include="Content\Images\Miscellaneous\woodenbutton.png" />
     <Content Include="Content\Sounds\music.mp3" />
     <Content Include="Content\Sounds\wind.wav" />
-    <Content Include="Icon.ico" />
     <Content Include="icon2.ico" />
   </ItemGroup>
   <ItemGroup>

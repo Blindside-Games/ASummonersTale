@@ -28,7 +28,6 @@ namespace ASummonersTale.GameStates
             font = Game.Content.Load<SpriteFont>(@"Fonts\trajan");
             //background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
 
-
             string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT" };
 
             menuComponent = new MenuComponent(font, menuItems, GameReference);
@@ -45,10 +44,17 @@ namespace ASummonersTale.GameStates
             if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter))
             {
                 // TODO: Implement next states
-                if (menuComponent.SelectedIndex < 3)
-                    InputHandler.Flush();
-                else
-                    Game.Exit();
+                switch (menuComponent.SelectedIndex)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                        break;
+
+                    case 3:
+                        Game.Exit();
+                        break;
+                }
             }
 
             base.Update(gameTime);

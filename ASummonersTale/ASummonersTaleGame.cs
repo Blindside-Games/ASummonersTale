@@ -14,6 +14,8 @@ namespace ASummonersTale
     public class ASummonersTaleGame : Game
     {
         GraphicsDeviceManager graphics;
+
+        public static bool SavedGamePresent = false;
         
         private static Rectangle screenRectangle;
         public static Rectangle ScreenRectangle => screenRectangle;

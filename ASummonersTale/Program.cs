@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ASummonersTale.Components.Settings;
+using Microsoft.Win32;
+using System;
 
 namespace ASummonersTale
 {
@@ -14,6 +16,8 @@ namespace ASummonersTale
         [STAThread]
         static void Main()
         {
+            RegistryConfiguration.ConfigureRegistry();
+
             using (var game = new ASummonersTaleGame())
                 game.Run();
         }
