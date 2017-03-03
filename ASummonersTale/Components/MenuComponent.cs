@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ASummonersTale.Components.Input;
+﻿using ASummonersTale.Components.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace ASummonersTale.Components
 {
@@ -50,6 +45,9 @@ namespace ASummonersTale.Components
         private Texture2D normalTexture, activeTexture, inactiveTexture;
 
         private SoundEffect buttonIndexChanged;
+        private SoundEffectInstance buttonIndexChangedEffectInstance;
+
+        private Rectangle previousButton;
 
         private Vector2 position;
         public Vector2 Position
@@ -58,7 +56,7 @@ namespace ASummonersTale.Components
             set { position = value; }
         }
 
-        public MenuComponent(SpriteFont font,  ASummonersTaleGame gameReference)
+        public MenuComponent(SpriteFont font, ASummonersTaleGame gameReference)
         {
             mouseOver = false;
 
@@ -68,6 +66,7 @@ namespace ASummonersTale.Components
             inactiveTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_inactive");
 
             buttonIndexChanged = gameReference.Content.Load<SoundEffect>(@"Sounds\button_sound");
+            buttonIndexChangedEffectInstance = buttonIndexChanged.CreateInstance();
         }
 
         public MenuComponent(SpriteFont font, string[] menuItems, ASummonersTaleGame gameReference) : this(font, gameReference)
@@ -84,30 +83,37 @@ namespace ASummonersTale.Components
             Vector2 menuPosition = position;
             Point point = InputHandler.MouseState.Position;
 
-            Rectangle buttonRectangle;
+            Rectangle currentButtonRectangle;
+
             mouseOver = false;
 
             // For each menu item
             for (int i = 0; i < menuItems.Count; i++)
             {
                 // Create a button rectangle 
-                buttonRectangle = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, normalTexture.Width, normalTexture.Height);
+                currentButtonRectangle = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, normalTexture.Width, normalTexture.Height);
 
+                
                 // If the mouse is inside the button's rectangle
-                if (buttonRectangle.Contains(point))
+                if (currentButtonRectangle.Contains(point))
                 {
+                    
+
+                    if (buttonIndexChangedEffectInstance.State == SoundState.Stopped)
+                        buttonIndexChangedEffectInstance.Play();
+
                     selectedIndex = i;
                     mouseOver = true;
                 }
 
-                menuPosition.Y += normalTexture.Height + 50;
+                menuPosition.Y += normalTexture.Height + 80;
             }
 
             if (!mouseOver && InputHandler.KeyReleased(Keys.Up))
             {
                 selectedIndex--;
 
-                buttonIndexChanged.Play();
+                buttonIndexChangedEffectInstance.Play();
 
                 // Wrap around
                 if (selectedIndex < 0)
@@ -117,7 +123,7 @@ namespace ASummonersTale.Components
             {
                 selectedIndex++;
 
-                buttonIndexChanged.Play();
+                buttonIndexChangedEffectInstance.Play();
 
                 if (selectedIndex > menuItems.Count - 1)
                     selectedIndex = 0;
@@ -132,8 +138,8 @@ namespace ASummonersTale.Components
 
             for (int i = 0; i < menuItems.Count; i++)
             {
-                drawTexture = (i == selectedIndex) ? activeTexture : normalTexture; 
-                
+                drawTexture = (i == selectedIndex) ? activeTexture : normalTexture;
+
                 spriteBatch.Draw(drawTexture, menuPosition, Color.White);
 
                 Vector2 textSize = font.MeasureString(menuItems[i]) / 2;
@@ -141,9 +147,9 @@ namespace ASummonersTale.Components
                                        new Vector2((normalTexture.Width - textSize.X) / 2,
                                             (normalTexture.Height - textSize.Y) / 2 + 7);
 
-                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.5f, 0.5f), SpriteEffects.None, 0 );
+                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.5f, 0.5f), SpriteEffects.None, 0);
 
-                menuPosition.Y += normalTexture.Height + 50;
+                menuPosition.Y += normalTexture.Height + 75;
             }
         }
 

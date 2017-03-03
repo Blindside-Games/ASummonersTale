@@ -27,13 +27,13 @@ namespace ASummonersTale.GameStates
         {
             font = Game.Content.Load<SpriteFont>(@"Fonts\trajan");
             //background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
-           
 
-            string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT"};
+
+            string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT" };
 
             menuComponent = new MenuComponent(font, menuItems, GameReference);
 
-            menuComponent.Position = new Vector2(1200 - menuComponent.Width, 90);
+            menuComponent.Position = new Vector2(1350 - menuComponent.Width, 90);
 
             base.LoadContent();
         }
