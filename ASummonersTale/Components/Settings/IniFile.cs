@@ -21,9 +21,6 @@ namespace ASummonersTale.Components.Settings
         private static extern UInt32 GetPrivateProfileSection
            (
                [In] [MarshalAs(UnmanagedType.LPStr)] string strSectionName,
-               // Note that because the key/value pars are returned as null-terminated
-               // strings with the last string followed by 2 null-characters, we cannot
-               // use StringBuilder.
                [In] IntPtr pReturnedString,
                [In] UInt32 nSize,
                [In] [MarshalAs(UnmanagedType.LPStr)] string strFileName
@@ -66,34 +63,25 @@ namespace ASummonersTale.Components.Settings
 
         private string[] GetAllKeysInSection(string section)
         {
-            // Allocate in unmanaged memory a buffer of suitable size.
-            // I have specified here the max size of 32767 as documentated
-            // in MSDN.
             IntPtr pBuffer = Marshal.AllocHGlobal(32767);
-            // Start with an array of 1 string only.
-            // Will embellish as we go along.
             string[] strArray = new string[0];
             UInt32 uiNumCharCopied = 0;
 
             uiNumCharCopied = GetPrivateProfileSection(section, pBuffer, 32767, path);
-
-            // iStartAddress will point to the first character of the buffer,
+            
             int iStartAddress = pBuffer.ToInt32();
-            // iEndAddress will point to the last null char in the buffer.
             int iEndAddress = iStartAddress + (int)uiNumCharCopied;
 
-            // Navigate through pBuffer.
             while (iStartAddress < iEndAddress)
             {
-                // Determine the current size of the array.
                 int iArrayCurrentSize = strArray.Length;
-                // Increment the size of the string array by 1.
+                
                 Array.Resize(ref strArray, iArrayCurrentSize + 1);
-                // Get the current string which starts at "iStartAddress".
+                
                 string strCurrent = Marshal.PtrToStringAnsi(new IntPtr(iStartAddress));
-                // Insert "strCurrent" into the string array.
+                
                 strArray[iArrayCurrentSize] = strCurrent;
-                // Make "iStartAddress" point to the next string.
+                
                 iStartAddress += (strCurrent.Length + 1);
             }
             Marshal.FreeHGlobal(pBuffer);
