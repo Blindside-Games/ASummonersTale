@@ -31,7 +31,7 @@ namespace ASummonersTale.TileEngine
             for (int y = 0; y < VerticalTileCount; y++)
                 for (int x = 0; x < HorizontalTileCount; x++)
                 {
-                    sourceRectangles[tile] = new Rectangle(x * TileWidth, x * TileHeight, TileWidth, TileHeight);
+                    sourceRectangles[tile] = new Rectangle(x * TileWidth, y * TileHeight, TileWidth, TileHeight);
                     ++tile;
                 }
 
@@ -51,7 +51,7 @@ namespace ASummonersTale.TileEngine
             for (int y = 0; y < VerticalTileCount; y++)
                 for (int x = 0; x < HorizontalTileCount; x++)
                 {
-                    sourceRectangles[tile] = new Rectangle(x * TileWidth, x * TileHeight, TileWidth, TileHeight);
+                    sourceRectangles[tile] = new Rectangle(x * TileWidth, y * TileHeight, TileWidth, TileHeight);
                     ++tile;
                 }
         }

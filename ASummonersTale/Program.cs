@@ -1,6 +1,7 @@
 ﻿using ASummonersTale.Components.Settings;
 using Microsoft.Win32;
 using System;
+using System.Linq;
 
 namespace ASummonersTale
 {
@@ -19,7 +20,12 @@ namespace ASummonersTale
             RegistryConfiguration.ConfigureRegistry();
 
             using (var game = new ASummonersTaleGame())
+            {
+                if (!game.Components.Any())
+                    return;
+
                 game.Run();
+            }
         }
     }
 #endif

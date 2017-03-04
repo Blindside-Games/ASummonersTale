@@ -85,6 +85,8 @@
     <Compile Include="Components\Input\InputHandler.cs" />
     <Compile Include="Components\Input\MouseButton.cs" />
     <Compile Include="Components\MenuComponent.cs" />
+    <Compile Include="Components\Settings\IniFile.cs" />
+    <Compile Include="Components\Settings\IniSection.cs" />
     <Compile Include="Components\Settings\RegistryConfiguration.cs" />
     <Compile Include="Components\Settings\Settings.cs" />
     <Compile Include="GameStates\AbstractGameState.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="StateManager\GameStateManager.cs" />
     <Compile Include="StateManager\Interfaces\IGameStateManager.cs" />
     <Compile Include="TileEngine\Camera.cs" />
+    <Compile Include="TileEngine\TileLayer.cs" />
+    <Compile Include="TileEngine\TileMap.cs" />
     <Compile Include="TileEngine\TileSet.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,11 +114,13 @@
       <HintPath>..\packages\GeonBit.UI.2.0.0\lib\geonbitui\GeonBit.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

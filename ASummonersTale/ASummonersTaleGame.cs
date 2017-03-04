@@ -1,4 +1,5 @@
 ﻿using ASummonersTale.Components.Input;
+using ASummonersTale.Components.Settings;
 using ASummonersTale.GameStates;
 using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.StateManager;
@@ -15,6 +16,7 @@ namespace ASummonersTale
     {
         GraphicsDeviceManager graphics;
 
+        internal static Settings settings;
         public static bool SavedGamePresent = false;
         
         private static Rectangle screenRectangle;
@@ -37,7 +39,18 @@ namespace ASummonersTale
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            
+            settings = new Settings();
+
+            if (!settings.ReadSettings())
+            {
+                Exit();
+
+                return;
+            }
+
+            if (settings.AntiAliasingOn)
+                EnableAntiAliasing();
+
             screenRectangle = new Rectangle(0, 0, 1280, 720);
 
             graphics.PreferredBackBufferHeight = screenRectangle.Height;
@@ -50,6 +63,7 @@ namespace ASummonersTale
 
             splashScreenState = new SplashScreenState(this);
             startMenuState = new MenuState(this);
+   
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
         }
@@ -104,8 +118,8 @@ namespace ASummonersTale
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-               // Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
 
             // TODO: Add your update logic here
 
