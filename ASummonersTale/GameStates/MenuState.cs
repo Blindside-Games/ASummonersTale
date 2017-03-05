@@ -26,7 +26,7 @@ namespace ASummonersTale.GameStates
         protected override void LoadContent()
         {
             font = Game.Content.Load<SpriteFont>(@"Fonts\trajan");
-            //background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
+            background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
 
             string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT" };
 
