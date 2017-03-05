@@ -19,8 +19,6 @@ namespace ASummonersTale.Components.Clouds
 
         public float CurrentCloudSpawn = 6;
 
-        private int seed;
-
         public CloudLayer(int layerDepth, int layerSpeed)
         {
             Clouds = new List<Cloud>();

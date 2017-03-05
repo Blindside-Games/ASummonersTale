@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -101,6 +104,18 @@ namespace ASummonersTale.Components.Settings
             Marshal.FreeHGlobal(pBuffer);
 
             return result;
+        }
+
+        public IEnumerable<string> GetSectionNames()
+        {
+            string ini = File.ReadAllText(path);
+
+            Regex pattern = new Regex(@"\[[^\]]+\]");
+
+            IEnumerator matchEnumerator = pattern.Matches(ini).GetEnumerator();
+
+            while (matchEnumerator.MoveNext())
+                yield return matchEnumerator.Current.ToString();
         }
     }
 }

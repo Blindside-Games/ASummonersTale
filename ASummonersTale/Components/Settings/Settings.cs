@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Resources;
 using System.Windows.Forms;
-using ASummonersTale.GameStates;
-using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -25,6 +23,18 @@ namespace ASummonersTale.Components.Settings
         public float SoundEffectsVolume { get; set; }
 
         private readonly IniFile settingsIniFile;
+
+        bool AllCategoriesPresent
+        {
+            get
+            {
+                foreach (var cat in GetSettingsCategories())
+                    if (!settingsIniFile.GetSectionNames().Contains(cat))
+                        return false;
+
+                return true;
+            }
+        }
 
         public Settings()
         {
@@ -85,12 +95,12 @@ namespace ASummonersTale.Components.Settings
 
                     if (!valid)
                         break;
-                
+
                 }
 
-            if (!valid && MessageBox.Show("Invalid settings file. Settings will be reset.",
+            if (!valid && MessageBox.Show("Invalid settings file. Press OK to reset to default settings.",
                     "Settings Invalid",
-                    MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
             {
                 Reset();
 
@@ -110,6 +120,23 @@ namespace ASummonersTale.Components.Settings
 
                 settingsIniFile.Write(propertyInfo.Name, attribute.DefaultValue.ToString(), attribute.Section);
             }
+        }
+
+        private IEnumerable<string> GetSettingsCategories()
+        {
+            List<string> results = new List<string>();
+
+            PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var propertyInfo in properties)
+            {
+                IniSection attribute = (IniSection)propertyInfo.GetCustomAttribute(typeof(IniSection), false);
+
+                if (!results.Contains($"[{attribute.Section}]"))
+                    results.Add($"[{attribute.Section}]");
+            }
+
+            return results;
         }
     }
 }

@@ -56,13 +56,15 @@ namespace ASummonersTale.Components
             set { position = value; }
         }
 
+
+
         public MenuComponent(SpriteFont font, ASummonersTaleGame gameReference)
         {
             mouseOver = false;
 
             this.font = font;
-            normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
-            activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
+            activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
+            normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
             inactiveTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_inactive");
 
             buttonIndexChanged = gameReference.Content.Load<SoundEffect>(@"Sounds\button_sound");
