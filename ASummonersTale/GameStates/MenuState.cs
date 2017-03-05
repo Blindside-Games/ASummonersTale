@@ -41,7 +41,7 @@ namespace ASummonersTale.GameStates
         {
             menuComponent.Update(gameTime, null);
 
-            if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter))
+            if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter) || InputHandler.MouseReleased(MouseButton.Left))
             {
                 // TODO: Implement next states
                 switch (menuComponent.SelectedIndex)
