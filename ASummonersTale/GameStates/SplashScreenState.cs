@@ -53,9 +53,11 @@ namespace ASummonersTale.GameStates
 
 			windEffectInstance = windSound.CreateInstance();
 			windEffectInstance.IsLooped = true;
+            windEffectInstance.Volume = ASummonersTaleGame.Settings.SoundEffectsVolume;
 			windEffectInstance.Play();
 
 			MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = ASummonersTaleGame.Settings.MusicVolume;
 			MediaPlayer.Play(menuMusic);
 
 			cloud = content.Load<Texture2D>(@"Images\Miscellaneous\cloud");

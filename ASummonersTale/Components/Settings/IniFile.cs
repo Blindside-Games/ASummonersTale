@@ -36,7 +36,7 @@ namespace ASummonersTale.Components.Settings
             path = new FileInfo(iniPath ?? $"{executableName}.ini").FullName;
 
             if (!File.Exists(path))
-                File.Create(path);
+                File.Create(path).Close();
         }
 
         public string Read(string key, string section = null)

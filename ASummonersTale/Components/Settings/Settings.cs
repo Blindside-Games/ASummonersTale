@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -39,9 +40,12 @@ namespace ASummonersTale.Components.Settings
         public Settings()
         {
             settingsIniFile = new IniFile("settings.ini");
+
+            if (!AllCategoriesPresent)
+                Reset();
         }
 
-        public bool ReadSettings()
+        public async Task<bool> ReadSettings()
         {
             bool valid = settingsIniFile.SectionExists("Audio") && settingsIniFile.SectionExists("Video");
 
@@ -102,7 +106,7 @@ namespace ASummonersTale.Components.Settings
                     "Settings Invalid",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.OK)
             {
-                Reset();
+                await Reset();
 
                 valid = true;
             }
@@ -110,7 +114,7 @@ namespace ASummonersTale.Components.Settings
             return valid;
         }
 
-        public void Reset()
+        public async Task Reset()
         {
             PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 

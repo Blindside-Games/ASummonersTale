@@ -6,6 +6,7 @@ using ASummonersTale.StateManager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Threading.Tasks;
 
 namespace ASummonersTale
 {
@@ -16,7 +17,7 @@ namespace ASummonersTale
     {
         GraphicsDeviceManager graphics;
 
-        internal static Settings settings;
+        internal static Settings Settings;
         public static bool SavedGamePresent = false;
         
         private static Rectangle screenRectangle;
@@ -39,16 +40,16 @@ namespace ASummonersTale
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            settings = new Settings();
+            Settings = new Settings();
 
-            if (!settings.ReadSettings())
+            if (!(Task.Run(async () => await Settings.ReadSettings()).Result))
             {
                 Exit();
 
                 return;
             }
 
-            if (settings.AntiAliasingOn)
+            if (Settings.AntiAliasingOn)
                 EnableAntiAliasing();
 
             screenRectangle = new Rectangle(0, 0, 1280, 720);

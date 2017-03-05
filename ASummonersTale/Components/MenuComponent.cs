@@ -63,8 +63,8 @@ namespace ASummonersTale.Components
             mouseOver = false;
 
             this.font = font;
-            activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
-            normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
+            activeTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_activated");
+            normalTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_normal");
             inactiveTexture = gameReference.Content.Load<Texture2D>(@"Images\Miscellaneous\menu_button_inactive");
 
             buttonIndexChanged = gameReference.Content.Load<SoundEffect>(@"Sounds\button_sound");
@@ -147,10 +147,10 @@ namespace ASummonersTale.Components
 
                 Vector2 textSize = font.MeasureString(menuItems[i]) / 2;
                 Vector2 textPosition = menuPosition +
-                                       new Vector2((normalTexture.Width - textSize.X) / 2,
+                                       new Vector2((normalTexture.Width - textSize.X) / 2 + 15,
                                             (normalTexture.Height - textSize.Y) / 2 + 7);
 
-                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.5f, 0.5f), SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.4f, 0.4f), SpriteEffects.None, 0);
 
                 menuPosition.Y += normalTexture.Height + 75;
             }
