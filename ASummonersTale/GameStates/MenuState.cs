@@ -62,13 +62,11 @@ namespace ASummonersTale.GameStates
 
         public override void Draw(GameTime gameTime)
         {
-            // TODO: Uncomment when art is ready
-
-            /*GameReference.SpriteBatch.Begin();
+            GameReference.SpriteBatch.Begin();
 
             GameReference.SpriteBatch.Draw(background, Vector2.Zero, Color.White);
 
-            GameReference.SpriteBatch.End();*/
+            GameReference.SpriteBatch.End();
 
             base.Draw(gameTime);
 
