@@ -85,44 +85,57 @@ namespace ASummonersTale.Components
 
             mouseOver = false;
 
+            int lastSelectedIndex = 0;
+
             // For each menu item
             for (int i = 0; i < menuItems.Count; i++)
             {
                 // Create a button rectangle 
                 currentButtonRectangle = new Rectangle((int)menuPosition.X, (int)menuPosition.Y, normalTexture.Width, normalTexture.Height);
 
-                
+
                 // If the mouse is inside the button's rectangle
                 if (currentButtonRectangle.Contains(point))
                 {
-                    if (buttonIndexChangedEffectInstance.State == SoundState.Stopped)
+                    if (buttonIndexChangedEffectInstance.State == SoundState.Stopped && selectedIndex != i)
+                    {
+                        if (i == 0 && !ASummonersTaleGame.SavedGamePresent)
+                            continue;
+
                         buttonIndexChangedEffectInstance.Play();
+                    }
 
                     selectedIndex = i;
                     mouseOver = true;
                 }
 
-                menuPosition.Y += normalTexture.Height + 80;
+                menuPosition.Y += normalTexture.Height + 40;
             }
 
             if (!mouseOver && InputHandler.KeyReleased(Keys.Up))
             {
+
                 selectedIndex--;
 
                 buttonIndexChangedEffectInstance.Play();
 
+
                 // Wrap around
                 if (selectedIndex < 0 || (selectedIndex == 0 && !ASummonersTaleGame.SavedGamePresent))
+                {
+
                     selectedIndex = menuItems.Count - 1;
+                }
             }
             else if (!mouseOver && InputHandler.KeyReleased(Keys.Down))
             {
                 selectedIndex++;
-
                 buttonIndexChangedEffectInstance.Play();
 
                 if (selectedIndex > menuItems.Count - 1)
+                {                    
                     selectedIndex = ASummonersTaleGame.SavedGamePresent ? 0 : 1;
+                }
             }
         }
 
@@ -143,7 +156,7 @@ namespace ASummonersTale.Components
 
                 int offset = i == 3 ? 4 : 14;
 
-                Vector2 textSize = font.MeasureString(menuItems[i])/2;
+                Vector2 textSize = font.MeasureString(menuItems[i]) / 2;
                 Vector2 textPosition = menuPosition +
                                        new Vector2((normalTexture.Width - textSize.X) / 2 + offset,
                                             (normalTexture.Height - textSize.Y) / 2 + 7);

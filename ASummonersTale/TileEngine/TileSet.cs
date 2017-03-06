@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ASummonersTale.TileEngine
 {
-    class TileSet
+    public class TileSet
     {
         public int HorizontalTileCount { get; } = 8;
         public int VerticalTileCount { get; } = 8;
@@ -14,7 +14,7 @@ namespace ASummonersTale.TileEngine
         private readonly Rectangle[] sourceRectangles;
 
         [ContentSerializerIgnore]
-        public Texture2D TileSetTexture { get; set; }
+        public Texture2D Texture { get; set; }
 
         [ContentSerializer]
         public string TileSetTextureName { get; set; }

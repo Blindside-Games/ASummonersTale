@@ -15,7 +15,6 @@ namespace ASummonersTale.GameStates
         private Texture2D background;
         private SpriteFont font;
         private MenuComponent menuComponent;
-        private bool increasing;
 
         PenumbraComponent penumbra;
 
@@ -23,7 +22,7 @@ namespace ASummonersTale.GameStates
 
         Random r = new Random();
 
-        Light staffLight, doorLight, torchLight;
+        Light staffLight, doorLight;
 
         public MenuState(Game game) : base(game)
         {
@@ -47,8 +46,7 @@ namespace ASummonersTale.GameStates
                 Position = new Vector2(213, 248),
                 Color = Color.Yellow
             };
-
-
+            
             penumbra.Lights.Add(staffLight);
             penumbra.Lights.Add(doorLight);
         }
@@ -79,7 +77,7 @@ namespace ASummonersTale.GameStates
             menuComponent.Update(gameTime, null);
 
             if (staffLightIntensity <= 250 )
-                staffLightIntensity += (100f * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                staffLightIntensity += (700f * (float)gameTime.ElapsedGameTime.TotalSeconds);
            
             staffLight.Scale = new Vector2(staffLightIntensity);
 
