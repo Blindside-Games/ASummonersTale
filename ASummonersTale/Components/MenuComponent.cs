@@ -102,6 +102,9 @@ namespace ASummonersTale.Components
                         if (i == 0 && !ASummonersTaleGame.SavedGamePresent)
                             continue;
 
+                        if (buttonIndexChangedEffectInstance.State == SoundState.Playing)
+                            buttonIndexChangedEffectInstance.Stop();
+
                         buttonIndexChangedEffectInstance.Play();
                     }
 
@@ -123,13 +126,16 @@ namespace ASummonersTale.Components
                 // Wrap around
                 if (selectedIndex < 0 || (selectedIndex == 0 && !ASummonersTaleGame.SavedGamePresent))
                 {
-
                     selectedIndex = menuItems.Count - 1;
                 }
             }
             else if (!mouseOver && InputHandler.KeyReleased(Keys.Down))
             {
                 selectedIndex++;
+
+                if (buttonIndexChangedEffectInstance.State == SoundState.Playing)
+                    buttonIndexChangedEffectInstance.Stop();
+
                 buttonIndexChangedEffectInstance.Play();
 
                 if (selectedIndex > menuItems.Count - 1)
@@ -149,7 +155,7 @@ namespace ASummonersTale.Components
             {
                 drawTexture = (i == selectedIndex) ? activeTexture : normalTexture;
 
-                if (!ASummonersTaleGame.SavedGamePresent && i == 0)
+                if (i == 0 && !ASummonersTaleGame.SavedGamePresent )
                     drawTexture = inactiveTexture;
 
                 spriteBatch.Draw(drawTexture, menuPosition, Color.White);
@@ -161,7 +167,9 @@ namespace ASummonersTale.Components
                                        new Vector2((normalTexture.Width - textSize.X) / 2 + offset,
                                             (normalTexture.Height - textSize.Y) / 2 + 7);
 
-                spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.4f, 0.4f), SpriteEffects.None, 0);
+                Color textColour = !ASummonersTaleGame.SavedGamePresent && i == 0 ? Color.DarkSlateGray : Color.White;
+
+                spriteBatch.DrawString(font, menuItems[i], textPosition, textColour, 0f, Vector2.Zero, new Vector2(0.4f, 0.4f), SpriteEffects.None, 0);
 
                 menuPosition.Y += normalTexture.Height + 45;
             }
