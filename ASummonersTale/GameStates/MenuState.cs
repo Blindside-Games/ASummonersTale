@@ -4,6 +4,9 @@ using ASummonersTale.GameStates.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Penumbra;
+using System;
+
 
 namespace ASummonersTale.GameStates
 {
@@ -12,14 +15,48 @@ namespace ASummonersTale.GameStates
         private Texture2D background;
         private SpriteFont font;
         private MenuComponent menuComponent;
+        private bool increasing;
+
+        PenumbraComponent penumbra;
+
+        float staffLightIntensity = 1f;
+
+        Random r = new Random();
+
+        Light staffLight, doorLight, torchLight;
 
         public MenuState(Game game) : base(game)
         {
             Game.Services.AddService(typeof(IMenuState), this);
+
+            penumbra = new PenumbraComponent(GameReference)
+            {
+                AmbientColor = Color.Gray
+            };
+
+            staffLight = new PointLight
+            {
+                Scale = new Vector2(staffLightIntensity),
+                Position = new Vector2(413, 375),
+                Color = Color.Yellow
+            };
+
+            doorLight = new PointLight()
+            {
+                Scale = new Vector2(250),
+                Position = new Vector2(213, 248),
+                Color = Color.Yellow
+            };
+
+
+            penumbra.Lights.Add(staffLight);
+            penumbra.Lights.Add(doorLight);
         }
 
         public override void Initialize()
         {
+            penumbra.Initialize();
+
             base.Initialize();
         }
 
@@ -40,6 +77,11 @@ namespace ASummonersTale.GameStates
         public override void Update(GameTime gameTime)
         {
             menuComponent.Update(gameTime, null);
+
+            if (staffLightIntensity <= 250 )
+                staffLightIntensity += (100f * (float)gameTime.ElapsedGameTime.TotalSeconds);
+           
+            staffLight.Scale = new Vector2(staffLightIntensity);
 
             if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter) || InputHandler.MouseReleased(MouseButton.Left))
             {
@@ -62,18 +104,16 @@ namespace ASummonersTale.GameStates
 
         public override void Draw(GameTime gameTime)
         {
-            GameReference.SpriteBatch.Begin();
-
+            penumbra.BeginDraw();
+            GameReference.SpriteBatch.Begin(rasterizerState: GameReference.RasterizerState);
             GameReference.SpriteBatch.Draw(background, Vector2.Zero, Color.White);
-
             GameReference.SpriteBatch.End();
+            penumbra.Draw(gameTime);
 
             base.Draw(gameTime);
 
             GameReference.SpriteBatch.Begin(rasterizerState: GameReference.RasterizerState);
-
             menuComponent.Draw(gameTime, GameReference.SpriteBatch);
-
             GameReference.SpriteBatch.End();
         }
     }

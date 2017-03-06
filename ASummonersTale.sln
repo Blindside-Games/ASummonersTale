@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASummonersTale", "ASummonersTale\ASummonersTale.csproj", "{7170E1A2-F7B5-4264-9501-539CC9AE658A}"
 EndProject
@@ -14,6 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
 		MonoGame.Content.Builder.targets = MonoGame.Content.Builder.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6923195C-0B34-4E6E-8E14-546AEAE39832}"
+	ProjectSection(SolutionItems) = preProject
+		light.fx = light.fx
 	EndProjectSection
 EndProject
 Global
@@ -41,5 +46,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6923195C-0B34-4E6E-8E14-546AEAE39832} = {6025D6F5-E9E5-4545-BBC0-A9D37A014014}
 	EndGlobalSection
 EndGlobal

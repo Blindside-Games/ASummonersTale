@@ -47,16 +47,12 @@ namespace ASummonersTale.Components
         private SoundEffect buttonIndexChanged;
         private SoundEffectInstance buttonIndexChangedEffectInstance;
 
-        private Rectangle previousButton;
-
         private Vector2 position;
         public Vector2 Position
         {
             get { return position; }
             set { position = value; }
         }
-
-
 
         public MenuComponent(SpriteFont font, ASummonersTaleGame gameReference)
         {
@@ -145,14 +141,16 @@ namespace ASummonersTale.Components
 
                 spriteBatch.Draw(drawTexture, menuPosition, Color.White);
 
-                Vector2 textSize = font.MeasureString(menuItems[i]) / 2;
+                int offset = i == 3 ? 4 : 14;
+
+                Vector2 textSize = font.MeasureString(menuItems[i])/2;
                 Vector2 textPosition = menuPosition +
-                                       new Vector2((normalTexture.Width - textSize.X) / 2 + 15,
+                                       new Vector2((normalTexture.Width - textSize.X) / 2 + offset,
                                             (normalTexture.Height - textSize.Y) / 2 + 7);
 
                 spriteBatch.DrawString(font, menuItems[i], textPosition, Color.White, 0f, Vector2.Zero, new Vector2(0.4f, 0.4f), SpriteEffects.None, 0);
 
-                menuPosition.Y += normalTexture.Height + 75;
+                menuPosition.Y += normalTexture.Height + 45;
             }
         }
 
