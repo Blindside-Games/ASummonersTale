@@ -71,6 +71,17 @@ namespace ASummonersTale.TileEngine
             }
         }
 
+        public void FillBuildings()
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    BuildingLayer[x, y] = -1;
+                }
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             if (GroundLayer != null)

@@ -46,7 +46,7 @@ namespace ASummonersTale.GameStates
                 Position = new Vector2(213, 248),
                 Color = Color.Yellow
             };
-            
+
             penumbra.Lights.Add(staffLight);
             penumbra.Lights.Add(doorLight);
         }
@@ -76,9 +76,9 @@ namespace ASummonersTale.GameStates
         {
             menuComponent.Update(gameTime, null);
 
-            if (staffLightIntensity <= 250 )
+            if (staffLightIntensity <= 250)
                 staffLightIntensity += (700f * (float)gameTime.ElapsedGameTime.TotalSeconds);
-           
+
             staffLight.Scale = new Vector2(staffLightIntensity);
 
             if (InputHandler.KeyReleased(Keys.Space) || InputHandler.KeyReleased(Keys.Enter) || InputHandler.MouseReleased(MouseButton.Left))
@@ -87,7 +87,27 @@ namespace ASummonersTale.GameStates
                 switch (menuComponent.SelectedIndex)
                 {
                     case 0:
+                        {
+                            try
+                            {
+                                GameReference.PlayState.LoadGame();
+                                GameReference.PlayState.StartGame();
+
+                               // manager.PushState((PlayState)GameReference.PlayState, playerInControl);
+                            }
+                            catch
+                            {
+
+                            }
+                            break;
+                        }
                     case 1:
+                        {
+                            GameReference.PlayState.NewGame();
+                            GameReference.PlayState.StartGame();
+                            //manager.PushState((PlayState)GameReference.PlayState, playerInControl);
+                            break;
+                        }
                     case 2:
                         break;
 

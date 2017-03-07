@@ -84,6 +84,7 @@
     <Compile Include="Components\Clouds\CloudLayer.cs" />
     <Compile Include="Components\Input\InputHandler.cs" />
     <Compile Include="Components\Input\MouseButton.cs" />
+    <Compile Include="Components\LevelManager.cs" />
     <Compile Include="Components\MenuComponent.cs" />
     <Compile Include="Components\Settings\IniFile.cs" />
     <Compile Include="Components\Settings\IniSection.cs" />
@@ -93,8 +94,10 @@
     <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\Interfaces\IGameState.cs" />
     <Compile Include="GameStates\Interfaces\IMenuState.cs" />
+    <Compile Include="GameStates\Interfaces\IPlayState.cs" />
     <Compile Include="GameStates\Interfaces\ISplashScreenState.cs" />
     <Compile Include="GameStates\MenuState.cs" />
+    <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="GameStates\SplashScreenState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -65,7 +65,7 @@ namespace ASummonersTale.TileEngine
 
         public TileLayer(int width, int height) : this()
         {
-            tiles = new int[width * this.height];
+            tiles = new int[width * height];
 
             this.width = width;
             this.height = height;

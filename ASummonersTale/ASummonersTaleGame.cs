@@ -19,7 +19,7 @@ namespace ASummonersTale
 
         internal static Settings Settings;
         public static bool SavedGamePresent = false;
-        
+
         private static Rectangle screenRectangle;
         public static Rectangle ScreenRectangle => screenRectangle;
 
@@ -33,7 +33,10 @@ namespace ASummonersTale
         private IMenuState startMenuState;
         public IMenuState StartMenuState => startMenuState;
 
+        public IPlayState PlayState => playState;
+
         public RasterizerState RasterizerState;
+        private IPlayState playState;
 
         public ASummonersTaleGame()
         {
@@ -64,7 +67,8 @@ namespace ASummonersTale
 
             splashScreenState = new SplashScreenState(this);
             startMenuState = new MenuState(this);
-   
+            playState = new PlayState(this);
+
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
         }
