@@ -44,9 +44,15 @@ namespace ASummonersTale.TileEngine
             Name = mapName;
         }
 
-        public TileMap(TileSet tileSet, string mapName, TileLayer ground, TileLayer edge, TileLayer buildings, TileLayer Decoration)
+        public TileMap(TileSet tileSet, string mapName, TileLayer ground, TileLayer edge, TileLayer buildings, TileLayer decoration) : this(tileSet, mapName)
         {
+            GroundLayer = ground;
+            EdgeLayer = edge;
+            BuildingLayer = buildings;
+            DecorationLayer = decoration;
 
+            width = GroundLayer.Width;
+            height = GroundLayer.Height;
         }
 
         public void FillEdges()

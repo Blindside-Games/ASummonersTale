@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Windows.Forms;
+
 
 namespace ASummonersTale.GameStates
 {
@@ -39,8 +39,50 @@ namespace ASummonersTale.GameStates
         {
             Vector2 motion = Vector2.Zero;
 
+            bool s = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S),
+             a = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A),
+             d = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D),
+             w = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W);
+
             // TODO: Continue
-            if (InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
+            if (w && a)
+            {
+                motion.X = motion.Y = -1;
+            }
+            else if (w && d)
+            {
+                motion.X = 1;
+                motion.Y = -1;
+            }
+            else if (s && a)
+            {
+                motion.X = -1;
+                motion.Y = 1;
+            }
+            else if (s && d)
+            {
+                motion.X = 1;
+                motion.Y = 1;
+            }
+            else if (w)
+                motion.Y = -1;
+            else if (a)
+                motion.X = -1;
+            else if (s)
+                motion.Y = 1;
+            else if (d)
+                motion.X = 1;
+
+            if (motion != Vector2.Zero)
+            {
+                motion.Normalize();
+
+                motion *= camera.Speed;
+
+                camera.Position += motion;
+
+                camera.LockCamera(currentMap, ASummonersTaleGame.ScreenRectangle);
+            }
 
             base.Update(gameTime);
         }
@@ -75,12 +117,11 @@ namespace ASummonersTale.GameStates
 
         public void LoadGame()
         {
-            MessageBox.Show("Not ready");
+       
         }
 
         public void StartGame()
         {
-            MessageBox.Show("Not ready");
         }
 
  

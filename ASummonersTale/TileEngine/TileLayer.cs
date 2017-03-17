@@ -127,7 +127,9 @@ namespace ASummonersTale.TileEngine
 
             for (int y = min.Y; y < max.Y; y++)
             {
-                for (int x = min.X; y < max.X; x++)
+                destination.Y = y * Engine.TileHeight;
+
+                for (int x = min.X; x < max.X; x++)
                 {
                     tile = this[x, y];
 
@@ -135,7 +137,7 @@ namespace ASummonersTale.TileEngine
                     if (tile == -1)
                         continue;
 
-                    destination.X += x * Engine.TileWidth;
+                    destination.X = x * Engine.TileWidth;
 
                     spriteBatch.Draw(tileSet.Texture, destination, tileSet.SourceRectangles[tile], Color.White);
                 }

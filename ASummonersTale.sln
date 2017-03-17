@@ -16,11 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		MonoGame.Content.Builder.targets = MonoGame.Content.Builder.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shaders", "Shaders", "{6923195C-0B34-4E6E-8E14-546AEAE39832}"
-	ProjectSection(SolutionItems) = preProject
-		light.fx = light.fx
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -46,8 +41,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{6923195C-0B34-4E6E-8E14-546AEAE39832} = {6025D6F5-E9E5-4545-BBC0-A9D37A014014}
 	EndGlobalSection
 EndGlobal

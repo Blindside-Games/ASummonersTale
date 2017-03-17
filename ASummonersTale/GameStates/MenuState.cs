@@ -105,7 +105,7 @@ namespace ASummonersTale.GameStates
                         {
                             GameReference.PlayState.NewGame();
                             GameReference.PlayState.StartGame();
-                            //manager.PushState((PlayState)GameReference.PlayState, playerInControl);
+                            manager.PushState((PlayState)GameReference.PlayState, playerInControl);
                             break;
                         }
                     case 2:

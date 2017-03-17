@@ -18,7 +18,7 @@ namespace ASummonersTale.Components
         public int SelectedIndex
         {
             get { return selectedIndex; }
-            set { selectedIndex = (int)MathHelper.Clamp(value, 0, menuItems.Count - 1); }
+            set { selectedIndex = MathHelper.Clamp(value, 0, menuItems.Count - 1); }
         }
 
         private bool mouseOver;
@@ -84,8 +84,6 @@ namespace ASummonersTale.Components
             Rectangle currentButtonRectangle;
 
             mouseOver = false;
-
-            int lastSelectedIndex = 0;
 
             // For each menu item
             for (int i = 0; i < menuItems.Count; i++)
