@@ -42,17 +42,17 @@ namespace ASummonersTale.Components.Settings
             settingsIniFile = new IniFile("settings.ini");
 
             if (!AllCategoriesPresent)
-                Reset();
+                Task.Run(async () => await Reset());
         }
 
         public async Task<bool> ReadSettings()
         {
-            bool valid = settingsIniFile.SectionExists("Audio") && settingsIniFile.SectionExists("Video");
+            bool valid = true;
 
             PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             // If valid is true here all sections must be present
-            if (valid)
+            if (AllCategoriesPresent)
                 foreach (var propertyInfo in properties)
                 {
                     IniSection attribute = (IniSection)propertyInfo.GetCustomAttribute(typeof(IniSection), false);

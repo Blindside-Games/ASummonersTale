@@ -7,8 +7,29 @@ namespace ASummonersTale.TileEngine
     internal class Engine
     {
         public static Rectangle ViewportRectangle { get; private set; }
-        public static int TileWidth { get; internal set; } = 32;
-        public static int TileHeight { get; internal set; } = 32;
+
+        private static int tileWidth = 32;
+        public static int TileWidth
+        {
+            get => tileWidth / ScaleFactor;
+            internal set => tileWidth = value;
+        }
+
+        private static int tileHeight = 32;
+        public static int TileHeight
+        {
+            get => tileHeight / ScaleFactor;
+            private set => tileHeight = value;
+        }
+
+        private static int minScaleFactor = 1, maxScaleFactor = 4;
+
+        private static int scaleFactor;
+        public static int ScaleFactor
+        {
+            get => scaleFactor;
+            set => scaleFactor = MathHelper.Clamp(value, minScaleFactor, maxScaleFactor);
+        }
 
         private TileMap map;
 
@@ -22,6 +43,8 @@ namespace ASummonersTale.TileEngine
 
         public Engine(Rectangle viewPort)
         {
+            scaleFactor = minScaleFactor;
+
             ViewportRectangle = viewPort;
 
             camera = new Camera();
@@ -43,10 +66,7 @@ namespace ASummonersTale.TileEngine
 
         public void SetMap(TileMap map)
         {
-            if (map == null)
-                throw new ArgumentException(nameof(map));
-
-            this.map = map;
+            this.map = map ?? throw new ArgumentException(nameof(map));
         }
 
         public void Update(GameTime gameTime)

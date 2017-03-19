@@ -4,8 +4,6 @@ using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.TileEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
 
 
 namespace ASummonersTale.GameStates
@@ -26,7 +24,6 @@ namespace ASummonersTale.GameStates
 
         public override void Initialize()
         {
-
             base.Initialize();
         }
 
@@ -72,6 +69,12 @@ namespace ASummonersTale.GameStates
                 motion.Y = 1;
             else if (d)
                 motion.X = 1;
+            else if (InputHandler.KeyReleased(Microsoft.Xna.Framework.Input.Keys.M))
+            {
+                GameReference.WorldMapState.ConstructMap(currentMap, camera);
+
+                manager.PushState((WorldMapState)GameReference.WorldMapState, PlayerIndex.One);
+            }
 
             if (motion != Vector2.Zero)
             {
@@ -117,13 +120,13 @@ namespace ASummonersTale.GameStates
 
         public void LoadGame()
         {
-       
+
         }
 
         public void StartGame()
         {
         }
 
- 
+
     }
 }

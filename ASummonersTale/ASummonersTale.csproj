@@ -96,9 +96,11 @@
     <Compile Include="GameStates\Interfaces\IMenuState.cs" />
     <Compile Include="GameStates\Interfaces\IPlayState.cs" />
     <Compile Include="GameStates\Interfaces\ISplashScreenState.cs" />
+    <Compile Include="GameStates\Interfaces\IWorldMapState.cs" />
     <Compile Include="GameStates\MenuState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="GameStates\SplashScreenState.cs" />
+    <Compile Include="GameStates\WorldMapState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateManager\GameStateManager.cs" />

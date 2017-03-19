@@ -24,6 +24,7 @@ namespace ASummonersTale
                 if (!game.Components.Any())
                     return;
 
+
                 game.Run();
             }
         }

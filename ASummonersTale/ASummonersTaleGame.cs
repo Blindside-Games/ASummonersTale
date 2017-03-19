@@ -35,6 +35,9 @@ namespace ASummonersTale
 
         public IPlayState PlayState => playState;
 
+        private IWorldMapState worldMapState;
+        internal IWorldMapState WorldMapState => worldMapState;
+
         public RasterizerState RasterizerState;
         private IPlayState playState;
 
@@ -68,6 +71,7 @@ namespace ASummonersTale
             splashScreenState = new SplashScreenState(this);
             startMenuState = new MenuState(this);
             playState = new PlayState(this);
+            worldMapState = new WorldMapState(this);
 
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);

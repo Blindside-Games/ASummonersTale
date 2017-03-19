@@ -22,6 +22,8 @@ namespace ASummonersTale.Components.Input
         public static MouseState MouseState => currentMouseState;
         public static MouseState PreviousMouseState => previousMouseState;
 
+        private int previousMouseScrollValue, currentMouseScrollValue; 
+
         public InputHandler(Game game) : base(game)
         {
         }
@@ -66,5 +68,9 @@ namespace ASummonersTale.Components.Input
                     return false;
             }
         }
+
+        public static bool MousewheelUp => currentMouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue;
+
+        public static bool MousewheelDown => currentMouseState.ScrollWheelValue < previousMouseState.ScrollWheelValue;
     }
 }
