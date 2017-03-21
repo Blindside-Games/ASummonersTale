@@ -1,5 +1,5 @@
  # build variables
-os: Visual Studio 2015
+image: Visual Studio 2017
 configuration: Release
 platform: x86
 environment:
@@ -42,7 +42,7 @@ install:
       Write-Host "Extracting MonoGame to $installerExtracted..."
       7z x -y $installerFile -o"$installerExtracted"
       Write-Host "Copying the MonoGame content pipeline to $programFiles..."
-      Copy-Item "$installerExtracted\`$PROGRAMFILES\MSBuild\MonoGame" "$programFiles\MSBuild" -Recurse 
+      Copy-Item "$installerExtracted\`$PROGRAMFILES\MSBuild\MonoGame" "$programFiles\Microsoft Visual Studio\2017\Community\MSBuild\MonoGame\" -Recurse 
       
       Write-Host "Downloading and installing butler"
       
