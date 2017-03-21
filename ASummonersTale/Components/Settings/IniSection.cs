@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Reflection;
 
 namespace ASummonersTale.Components.Settings
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = true)]
     public class IniSection : Attribute
     {
         private string section;

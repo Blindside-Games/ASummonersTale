@@ -17,7 +17,7 @@ namespace ASummonersTale
     {
         GraphicsDeviceManager graphics;
 
-        internal static Settings Settings;
+        internal Settings Settings;
         public static bool SavedGamePresent = false;
 
         private static Rectangle screenRectangle;

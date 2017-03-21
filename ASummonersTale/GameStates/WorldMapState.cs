@@ -3,6 +3,7 @@ using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.TileEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using static ASummonersTale.Components.Settings.Settings;
 
 namespace ASummonersTale.GameStates
 {
@@ -20,12 +21,12 @@ namespace ASummonersTale.GameStates
         {
             Vector2 motion = Vector2.Zero;
 
-            bool s = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S),
-             a = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A),
-             d = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D),
-             w = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W);
+            bool down = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapDown]),
+             left = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapLeft]),
+             right = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapRight]),
+             up = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapUp]);
 
-            if (InputHandler.KeyReleased(Keys.M))
+            if (InputHandler.IsKeybindReleased(GameReference.Settings.Bindings[Action.ToggleMap]))
             {
                 Engine.ScaleFactor = 1;
 
@@ -33,32 +34,32 @@ namespace ASummonersTale.GameStates
                 // close and reopen the map, it would leave lots of copies of the play state on the state stack      
                 manager.ChangeState((PlayState)GameReference.PlayState, PlayerIndex.One);
             }
-            else if (w && a)
+            else if (up && left)
             {
                 motion.X = motion.Y = -1;
             }
-            else if (w && d)
+            else if (up && right)
             {
                 motion.X = 1;
                 motion.Y = -1;
             }
-            else if (s && a)
+            else if (down && left)
             {
                 motion.X = -1;
                 motion.Y = 1;
             }
-            else if (s && d)
+            else if (down && right)
             {
                 motion.X = 1;
                 motion.Y = 1;
             }
-            else if (w)
+            else if (up)
                 motion.Y = -1;
-            else if (a)
+            else if (left)
                 motion.X = -1;
-            else if (s)
+            else if (down)
                 motion.Y = 1;
-            else if (d)
+            else if (right)
                 motion.X = 1;
 
             if (InputHandler.MousewheelUp)

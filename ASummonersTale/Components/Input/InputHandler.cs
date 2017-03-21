@@ -22,7 +22,7 @@ namespace ASummonersTale.Components.Input
         public static MouseState MouseState => currentMouseState;
         public static MouseState PreviousMouseState => previousMouseState;
 
-        private int previousMouseScrollValue, currentMouseScrollValue; 
+        private int previousMouseScrollValue, currentMouseScrollValue;
 
         public InputHandler(Game game) : base(game)
         {
@@ -72,5 +72,23 @@ namespace ASummonersTale.Components.Input
         public static bool MousewheelUp => currentMouseState.ScrollWheelValue > previousMouseState.ScrollWheelValue;
 
         public static bool MousewheelDown => currentMouseState.ScrollWheelValue < previousMouseState.ScrollWheelValue;
+
+        public static bool IsKeybindDown(List<Keys> keys)
+        {
+            foreach (var k in keys)
+                if (KeyboardState.IsKeyDown(k))
+                    return true;
+
+            return false;
+        }
+
+        public static bool IsKeybindReleased(List<Keys> keys)
+        {
+            foreach (var k in keys)
+                if (KeyReleased(k))
+                    return true;
+
+            return false;
+        }
     }
 }

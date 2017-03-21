@@ -3,6 +3,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -25,6 +28,9 @@ namespace ASummonersTale.Components.Settings
 
         private readonly IniFile settingsIniFile;
 
+        [IniSection("KeyBindings", null, typeof(Dictionary<Action, Microsoft.Xna.Framework.Input.Keys[]>))]
+        internal KeyBindings Bindings;
+
         bool AllCategoriesPresent
         {
             get
@@ -41,6 +47,8 @@ namespace ASummonersTale.Components.Settings
         {
             settingsIniFile = new IniFile("settings.ini");
 
+            Bindings = new KeyBindings();
+
             if (!AllCategoriesPresent)
                 Task.Run(async () => await Reset());
         }
@@ -50,6 +58,8 @@ namespace ASummonersTale.Components.Settings
             bool valid = true;
 
             PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            Bindings.ReadKeybindings(settingsIniFile);
 
             // If valid is true here all sections must be present
             if (AllCategoriesPresent)
@@ -124,6 +134,8 @@ namespace ASummonersTale.Components.Settings
 
                 settingsIniFile.Write(propertyInfo.Name, attribute.DefaultValue.ToString(), attribute.Section);
             }
+
+            Bindings.ResetKeybindings(settingsIniFile);
         }
 
         private IEnumerable<string> GetSettingsCategories()
@@ -141,6 +153,97 @@ namespace ASummonersTale.Components.Settings
             }
 
             return results;
+        }
+
+        internal class KeyBindings
+        {
+            Dictionary<Action, List<Microsoft.Xna.Framework.Input.Keys>> keyBindings;
+
+            internal List<Microsoft.Xna.Framework.Input.Keys> this[Action action]
+            {
+                get => keyBindings[action];
+            }
+
+            internal KeyValuePair<Action, List<Microsoft.Xna.Framework.Input.Keys>> this[Action a, List<Microsoft.Xna.Framework.Input.Keys> k]
+            {
+                set => keyBindings.Add(a, k);
+            }
+
+            public KeyBindings()
+            {
+                keyBindings = new Dictionary<Action, List<Microsoft.Xna.Framework.Input.Keys>>();
+            }
+
+            internal void ResetKeybindings(IniFile ini)
+            {
+                foreach (KeyValuePair<Action, List<Microsoft.Xna.Framework.Input.Keys>> kvp in defaultKeys)
+                {
+                    StringBuilder keys = new StringBuilder();
+
+                    int count = kvp.Value.Count();
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (i == count - 1)
+                            keys.Append(kvp.Value[i]);
+                        else
+                            keys.Append($"{kvp.Value[i]},");
+                    }
+
+                    ini.Write(kvp.Key.ToString(), keys.ToString(), nameof(KeyBindings));
+                }
+            }
+
+            internal void ReadKeybindings(IniFile ini)
+            {
+                string[] keyBindingsFromSettingsFile = ini.GetAllKeysInSection(nameof(KeyBindings));
+
+                Regex actionNameRegex = new Regex("^(.*?)="), keyBindingsRegex = new Regex("=(.*)");
+
+                foreach (var keybinding in keyBindingsFromSettingsFile)
+                {
+                    string actionName = actionNameRegex.Match(keybinding).ToString().TrimEnd('=');
+
+                    string[] keys = keyBindingsRegex.Match(keybinding).ToString().TrimStart('=').Split(',');
+
+                    Action action = (Action)Enum.Parse(typeof(Action), actionName);
+
+                    List<Microsoft.Xna.Framework.Input.Keys> keyEnums = new List<Microsoft.Xna.Framework.Input.Keys>();
+
+                    foreach (var key in keys)
+                    {
+                        keyEnums.Add((Microsoft.Xna.Framework.Input.Keys)Enum.Parse(typeof(Microsoft.Xna.Framework.Input.Keys), key));
+                    }
+
+                    keyBindings.Add(action, keyEnums);
+                }
+            }
+
+            static Dictionary<Action, List<Microsoft.Xna.Framework.Input.Keys>> defaultKeys = new Dictionary<Action, List<Microsoft.Xna.Framework.Input.Keys>>
+            {
+                { Action.MoveUp, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.W, Microsoft.Xna.Framework.Input.Keys.Up } },
+                { Action.MoveDown, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.S, Microsoft.Xna.Framework.Input.Keys.Down } },
+                { Action.MoveLeft, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.A, Microsoft.Xna.Framework.Input.Keys.Left } },
+                { Action.MoveRight, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.D, Microsoft.Xna.Framework.Input.Keys.Right } },
+                { Action.MoveMapUp, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Up } },
+                { Action.MoveMapRight, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Right } },
+                { Action.MoveMapDown, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Down } },
+                { Action.MoveMapLeft, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Left } },
+                { Action.ToggleMap, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.M } }
+            }; 
+        }
+
+        internal enum Action
+        {
+            MoveUp, 
+            MoveDown,
+            MoveLeft, 
+            MoveRight, 
+            MoveMapUp,
+            MoveMapDown,
+            MoveMapLeft,
+            MoveMapRight,
+            ToggleMap
         }
     }
 }

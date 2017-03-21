@@ -4,7 +4,7 @@ using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.TileEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using static ASummonersTale.Components.Settings.Settings;
 
 namespace ASummonersTale.GameStates
 {
@@ -34,57 +34,11 @@ namespace ASummonersTale.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            Vector2 motion = Vector2.Zero;
-
-            bool s = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S),
-             a = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A),
-             d = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D),
-             w = InputHandler.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W);
-
-            // TODO: Continue
-            if (w && a)
-            {
-                motion.X = motion.Y = -1;
-            }
-            else if (w && d)
-            {
-                motion.X = 1;
-                motion.Y = -1;
-            }
-            else if (s && a)
-            {
-                motion.X = -1;
-                motion.Y = 1;
-            }
-            else if (s && d)
-            {
-                motion.X = 1;
-                motion.Y = 1;
-            }
-            else if (w)
-                motion.Y = -1;
-            else if (a)
-                motion.X = -1;
-            else if (s)
-                motion.Y = 1;
-            else if (d)
-                motion.X = 1;
-            else if (InputHandler.KeyReleased(Microsoft.Xna.Framework.Input.Keys.M))
+            if (InputHandler.IsKeybindReleased(GameReference.Settings.Bindings[Action.ToggleMap]))
             {
                 GameReference.WorldMapState.ConstructMap(currentMap, camera);
 
                 manager.PushState((WorldMapState)GameReference.WorldMapState, PlayerIndex.One);
-            }
-
-            if (motion != Vector2.Zero)
-            {
-                motion.Normalize();
-
-                motion *= camera.Speed;
-
-                camera.Position += motion;
-
-                camera.LockCamera(currentMap, ASummonersTaleGame.ScreenRectangle);
             }
 
             base.Update(gameTime);

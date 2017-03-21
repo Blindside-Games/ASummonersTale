@@ -21,9 +21,8 @@ namespace ASummonersTale.Components.Settings
         static extern long GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
 
         [DllImport("Kernel32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
-        private static extern UInt32 GetPrivateProfileSection
-           (
-               [In] [MarshalAs(UnmanagedType.LPStr)] string strSectionName,
+        private static extern UInt32 GetPrivateProfileSection(
+            [In] [MarshalAs(UnmanagedType.LPStr)] string strSectionName,
                [In] IntPtr pReturnedString,
                [In] UInt32 nSize,
                [In] [MarshalAs(UnmanagedType.LPStr)] string strFileName
@@ -64,27 +63,27 @@ namespace ASummonersTale.Components.Settings
         }
 
 
-        private string[] GetAllKeysInSection(string section)
+        public string[] GetAllKeysInSection(string section)
         {
             IntPtr pBuffer = Marshal.AllocHGlobal(32767);
             string[] strArray = new string[0];
             UInt32 uiNumCharCopied = 0;
 
             uiNumCharCopied = GetPrivateProfileSection(section, pBuffer, 32767, path);
-            
-            int iStartAddress = pBuffer.ToInt32();
-            int iEndAddress = iStartAddress + (int)uiNumCharCopied;
+
+            Int64 iStartAddress = pBuffer.ToInt64();
+            Int64 iEndAddress = iStartAddress + (int)uiNumCharCopied;
 
             while (iStartAddress < iEndAddress)
             {
                 int iArrayCurrentSize = strArray.Length;
-                
+
                 Array.Resize(ref strArray, iArrayCurrentSize + 1);
-                
+
                 string strCurrent = Marshal.PtrToStringAnsi(new IntPtr(iStartAddress));
-                
+
                 strArray[iArrayCurrentSize] = strCurrent;
-                
+
                 iStartAddress += (strCurrent.Length + 1);
             }
             Marshal.FreeHGlobal(pBuffer);
