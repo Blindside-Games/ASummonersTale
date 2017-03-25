@@ -2,7 +2,6 @@
 using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.TileEngine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using static ASummonersTale.Components.Settings.Settings;
 
 namespace ASummonersTale.GameStates
@@ -21,23 +20,19 @@ namespace ASummonersTale.GameStates
         {
             Vector2 motion = Vector2.Zero;
 
-            bool down = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapDown]),
-             left = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapLeft]),
-             right = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapRight]),
-             up = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapUp]);
+            bool down = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapDown]) || MouseBottom,
+             left = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapLeft]) || MouseLeft,
+             right = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapRight]) || MouseRight,
+             up = InputHandler.IsKeybindDown(GameReference.Settings.Bindings[Action.MoveMapUp]) || MouseTop;
 
             if (InputHandler.IsKeybindReleased(GameReference.Settings.Bindings[Action.ToggleMap]))
-            {
-                Engine.ScaleFactor = 1;
+                CloseMap();
 
-                // Not sure this is correct, this will leave 2 play states on the stack. if you were to repeatedly 
-                // close and reopen the map, it would leave lots of copies of the play state on the state stack      
-                manager.ChangeState((PlayState)GameReference.PlayState, PlayerIndex.One);
-            }
-            else if (up && left)
+            if (up && left)
             {
                 motion.X = motion.Y = -1;
             }
+
             else if (up && right)
             {
                 motion.X = 1;
@@ -97,5 +92,23 @@ namespace ASummonersTale.GameStates
 
             Engine.ScaleFactor = 2;
         }
+
+
+        private void CloseMap()
+        {
+            Engine.ScaleFactor = 1;
+
+            manager.ChangeState((PlayState)GameReference.PlayState, PlayerIndex.One);
+        }
+
+        private readonly int ScrollUpZone = 80, ScrollLeftZone = 80, ScrollRightZone = ASummonersTaleGame.ScreenRectangle.Width - 80, ScrollDownZone = ASummonersTaleGame.ScreenRectangle.Height - 80;
+
+        private bool MouseTop => InputHandler.MouseState.Y < ScrollUpZone && InputHandler.MouseState.Y >= 0 ? true : false;
+
+        private bool MouseLeft => InputHandler.MouseState.X < ScrollLeftZone && InputHandler.MouseState.X >= 0 ? true : false;
+
+        private bool MouseBottom => InputHandler.MouseState.Y > ScrollDownZone && InputHandler.MouseState.Y <= ASummonersTaleGame.ScreenRectangle.Height ? true : false;
+
+        private bool MouseRight => InputHandler.MouseState.X > ScrollRightZone && InputHandler.MouseState.X <= ASummonersTaleGame.ScreenRectangle.Width ? true : false;
     }
 }
