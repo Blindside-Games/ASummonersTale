@@ -62,6 +62,7 @@ after_build:
   - echo Copying Files
   - xcopy "C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\A Summoner's Tale.exe" C:\projects\asummonerstale\output
   - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\*.dll C:\projects\asummonerstale\output
+  - xcopy C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\app.config C:\projects\asummonerstale\output
   - move C:\projects\asummonerstale\ASummonersTale\bin\Windows\x86\Release\Content C:\projects\asummonerstale\output 
   - cd C:\projects\asummonerstale\
   - butler -i $(BUTLER_API_KEY)

@@ -1,12 +1,12 @@
 ﻿using ASummonersTale.Components;
 using ASummonersTale.Components.Input;
 using ASummonersTale.GameStates.Interfaces;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Penumbra;
 using System;
-
 
 namespace ASummonersTale.GameStates
 {
@@ -26,13 +26,19 @@ namespace ASummonersTale.GameStates
 
         public MenuState(Game game) : base(game)
         {
+            log = LogManager.GetLogger(nameof(MenuState));
+
+
+            log.Info("Adding menu service");
             Game.Services.AddService(typeof(IMenuState), this);
 
+            
             penumbra = new PenumbraComponent(GameReference)
             {
                 AmbientColor = Color.Gray
             };
 
+            log.Debug("Adding staff light");
             staffLight = new PointLight
             {
                 Scale = new Vector2(staffLightIntensity),
@@ -40,6 +46,7 @@ namespace ASummonersTale.GameStates
                 Color = Color.Yellow
             };
 
+            log.Debug("Adding door light");
             doorLight = new PointLight()
             {
                 Scale = new Vector2(250),
@@ -53,6 +60,7 @@ namespace ASummonersTale.GameStates
 
         public override void Initialize()
         {
+            log.Info("Intitialising Penumbra");
             penumbra.Initialize();
 
             base.Initialize();
@@ -60,7 +68,9 @@ namespace ASummonersTale.GameStates
 
         protected override void LoadContent()
         {
+            log.Debug("Loading font");
             font = Game.Content.Load<SpriteFont>(@"Fonts\trajan");
+            log.Debug("Loading background");
             background = Game.Content.Load<Texture2D>(@"Images\Menu Screens\menuscreen");
 
             string[] menuItems = { "CONTINUE", "NEW GAME", "OPTIONS", "EXIT" };
@@ -93,7 +103,7 @@ namespace ASummonersTale.GameStates
                                 GameReference.PlayState.LoadGame();
                                 GameReference.PlayState.StartGame();
 
-                               // manager.PushState((PlayState)GameReference.PlayState, playerInControl);
+                                // manager.PushState((PlayState)GameReference.PlayState, playerInControl);
                             }
                             catch
                             {
@@ -103,8 +113,11 @@ namespace ASummonersTale.GameStates
                         }
                     case 1:
                         {
+                            log.Info("Starting game");
                             GameReference.PlayState.NewGame();
                             GameReference.PlayState.StartGame();
+
+                            log.Debug("Pushing play state");
                             manager.PushState((PlayState)GameReference.PlayState, playerInControl);
                             break;
                         }
@@ -112,6 +125,7 @@ namespace ASummonersTale.GameStates
                         break;
 
                     case 3:
+                        log.Info("Exiting game");
                         Game.Exit();
                         break;
                 }

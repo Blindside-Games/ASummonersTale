@@ -1,5 +1,5 @@
 ﻿using ASummonersTale.Components.Settings;
-using Microsoft.Win32;
+using log4net.Config;
 using System;
 using System.Linq;
 
@@ -18,6 +18,8 @@ namespace ASummonersTale
         static void Main()
         {
             RegistryConfiguration.ConfigureRegistry();
+
+            XmlConfigurator.Configure();
 
             using (var game = new ASummonersTaleGame())
             {

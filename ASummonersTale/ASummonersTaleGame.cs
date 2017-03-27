@@ -3,9 +3,11 @@ using ASummonersTale.Components.Settings;
 using ASummonersTale.GameStates;
 using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.StateManager;
+using ASummonersTale.TileEngine.Animations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ASummonersTale
@@ -26,6 +28,7 @@ namespace ASummonersTale
         private SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch => spriteBatch;
 
+        #region Game States
         private GameStateManager stateManager;
         private ISplashScreenState splashScreenState;
         public ISplashScreenState SplashScreenState => splashScreenState;
@@ -33,19 +36,29 @@ namespace ASummonersTale
         private IMenuState startMenuState;
         public IMenuState StartMenuState => startMenuState;
 
+        private IPlayState playState;
         public IPlayState PlayState => playState;
 
         private IWorldMapState worldMapState;
         internal IWorldMapState WorldMapState => worldMapState;
 
         public RasterizerState RasterizerState;
-        private IPlayState playState;
+        #endregion
+
+        #region Player
+
+        Dictionary<AnimationKey, Animation> playerAnimations = new Dictionary<AnimationKey, Animation>();
+
+        internal Dictionary<AnimationKey, Animation> PlayerAnimations => playerAnimations;
+
+        #endregion
 
         public ASummonersTaleGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            #region Set up settings
             Settings = new Settings();
 
             if (!(Task.Run(async () => await Settings.ReadSettings()).Result))
@@ -57,6 +70,7 @@ namespace ASummonersTale
 
             if (Settings.AntiAliasingOn)
                 EnableAntiAliasing();
+            #endregion
 
             screenRectangle = new Rectangle(0, 0, 1280, 720);
 
@@ -68,11 +82,12 @@ namespace ASummonersTale
 
             this.IsMouseVisible = true;
 
+            #region Create game states
             splashScreenState = new SplashScreenState(this);
             startMenuState = new MenuState(this);
             playState = new PlayState(this);
             worldMapState = new WorldMapState(this);
-
+            #endregion
 
             stateManager.ChangeState((SplashScreenState)splashScreenState, PlayerIndex.One);
         }
@@ -92,9 +107,16 @@ namespace ASummonersTale
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             Components.Add(new InputHandler(this));
+
+            #region Initialise player animations
+
+            playerAnimations.Add(AnimationKey.WalkDown, new Animation(3, 32, 32, 0, 0));
+            playerAnimations.Add(AnimationKey.WalkLeft, new Animation(3, 32, 32, 0, 32));
+            playerAnimations.Add(AnimationKey.WalkRight, new Animation(3, 32, 32, 0, 64));
+            playerAnimations.Add(AnimationKey.WalkUp, new Animation(3, 32, 32, 0, 96));
+
+            #endregion
 
             base.Initialize();
         }
@@ -105,10 +127,7 @@ namespace ASummonersTale
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -117,7 +136,7 @@ namespace ASummonersTale
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         /// <summary>
@@ -130,8 +149,6 @@ namespace ASummonersTale
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -142,8 +159,6 @@ namespace ASummonersTale
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

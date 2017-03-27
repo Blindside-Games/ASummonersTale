@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using log4net;
+using System.Diagnostics;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -29,7 +31,7 @@ namespace ASummonersTale.Components.Settings
         private readonly IniFile settingsIniFile;
 
         [IniSection("KeyBindings", null, typeof(Dictionary<Action, Microsoft.Xna.Framework.Input.Keys[]>))]
-        internal KeyBindings Bindings;
+        internal KeyBindings Bindings { get; set; }
 
         bool AllCategoriesPresent
         {
@@ -37,14 +39,23 @@ namespace ASummonersTale.Components.Settings
             {
                 foreach (var cat in GetSettingsCategories())
                     if (!settingsIniFile.GetSectionNames().Contains(cat))
+                    {
+                        log.Warn($"{cat} not in settings file. Settings will be reset");
                         return false;
+                    }
 
+                log.Debug("All settings categories present");
                 return true;
             }
         }
 
+        private readonly ILog log;
+
         public Settings()
         {
+            log = LogManager.GetLogger(nameof(Settings));
+
+            log.Debug("Creating or opening ini file");
             settingsIniFile = new IniFile("settings.ini");
 
             Bindings = new KeyBindings();
@@ -55,26 +66,37 @@ namespace ASummonersTale.Components.Settings
 
         public async Task<bool> ReadSettings()
         {
-            bool valid = true;
+            bool valid = AllCategoriesPresent;
 
-            PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable <PropertyInfo> properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(prop => prop.CustomAttributes.Any());
 
+            log.Info("Reading keybindings");
             Bindings.ReadKeybindings(settingsIniFile);
 
             // If valid is true here all sections must be present
-            if (AllCategoriesPresent)
+            if (valid)
                 foreach (var propertyInfo in properties)
                 {
                     IniSection attribute = (IniSection)propertyInfo.GetCustomAttribute(typeof(IniSection), false);
 
+                    log.Debug($"Reading settings for {propertyInfo.Name}");
+
+                    string raw = settingsIniFile.Read(propertyInfo.Name, attribute.Section);
+
+                    if (propertyInfo.PropertyType.Name == "KeyBindings")
+                        continue;
+
                     switch (attribute.Type.Name)
                     {
+                      
                         case "Single":
                             {
                                 float value;
 
-                                if (!float.TryParse(settingsIniFile.Read(propertyInfo.Name, attribute.Section), out value))
+                                if (!float.TryParse(raw, out value))
                                 {
+                                    log.Warn($"Invalid value '{raw}' for {propertyInfo.Name}");
+
                                     valid = false;
                                     break;
                                 }
@@ -92,8 +114,11 @@ namespace ASummonersTale.Components.Settings
                             {
                                 bool value;
 
-                                if (!bool.TryParse(settingsIniFile.Read(propertyInfo.Name, attribute.Section), out value))
+                                if (!bool.TryParse(raw, out value))
+                                {
+                                    log.Warn($"Invalid value '{raw}' for {propertyInfo.Name}");
                                     valid = false;
+                                }
                                 else
                                     propertyInfo.SetValue(this, value);
 
@@ -126,15 +151,21 @@ namespace ASummonersTale.Components.Settings
 
         public async Task Reset()
         {
-            PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            log.Info("Writing default settings");
+
+            IEnumerable<PropertyInfo> properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(prop => prop.CustomAttributes.Any());
 
             foreach (var propertyInfo in properties)
             {
+                if (propertyInfo.PropertyType.Name == "KeyBindings")
+                    continue;
+
                 IniSection attribute = (IniSection)propertyInfo.GetCustomAttribute(typeof(IniSection), false);
 
                 settingsIniFile.Write(propertyInfo.Name, attribute.DefaultValue.ToString(), attribute.Section);
             }
 
+            log.Info("Resetting keybindings");
             Bindings.ResetKeybindings(settingsIniFile);
         }
 
@@ -142,7 +173,7 @@ namespace ASummonersTale.Components.Settings
         {
             List<string> results = new List<string>();
 
-            PropertyInfo[] properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(prop => prop.CustomAttributes.Any());
 
             foreach (var propertyInfo in properties)
             {
@@ -169,8 +200,12 @@ namespace ASummonersTale.Components.Settings
                 set => keyBindings.Add(a, k);
             }
 
+            private readonly ILog log;
+
             public KeyBindings()
             {
+                log = LogManager.GetLogger(nameof(KeyBindings));
+
                 keyBindings = new Dictionary<Action, List<Microsoft.Xna.Framework.Input.Keys>>();
             }
 
@@ -182,8 +217,12 @@ namespace ASummonersTale.Components.Settings
 
                     int count = kvp.Value.Count();
 
+                    log.Debug($"Writing keybinds for {kvp.Key}. There are {count} keybindings for this key"); 
+
                     for (int i = 0; i < count; i++)
                     {
+                        log.Debug($"Writing {i} keybind for {kvp.Key}");
+
                         if (i == count - 1)
                             keys.Append(kvp.Value[i]);
                         else
@@ -192,21 +231,33 @@ namespace ASummonersTale.Components.Settings
 
                     ini.Write(kvp.Key.ToString(), keys.ToString(), nameof(KeyBindings));
                 }
+
+                //ReadKeybindings(ini);
             }
 
             internal void ReadKeybindings(IniFile ini)
             {
+                log.Info("Reading keybindings");
+
                 string[] keyBindingsFromSettingsFile = ini.GetAllKeysInSection(nameof(KeyBindings));
+
+                Debug.Assert(keyBindingsFromSettingsFile.Length == (int)Action.Count, "Keybind missing");
+
+                if (keyBindingsFromSettingsFile.Length != (int)Action.Count)
+                    log.Warn("Invalid keybind or keybind missing");
 
                 Regex actionNameRegex = new Regex("^(.*?)="), keyBindingsRegex = new Regex("=(.*)");
 
                 foreach (var keybinding in keyBindingsFromSettingsFile)
                 {
                     string actionName = actionNameRegex.Match(keybinding).ToString().TrimEnd('=');
+                    log.Debug($"Reading ");
+
 
                     string[] keys = keyBindingsRegex.Match(keybinding).ToString().TrimStart('=').Split(',');
 
-                    Action action = (Action)Enum.Parse(typeof(Action), actionName);
+                    if (!Enum.TryParse(actionName, out Action action))
+                        log.Warn($"Invalid keybind '{actionName}'");
 
                     List<Microsoft.Xna.Framework.Input.Keys> keyEnums = new List<Microsoft.Xna.Framework.Input.Keys>();
 
@@ -243,7 +294,8 @@ namespace ASummonersTale.Components.Settings
             MoveMapDown,
             MoveMapLeft,
             MoveMapRight,
-            ToggleMap
+            ToggleMap,
+            Count
         }
     }
 }
