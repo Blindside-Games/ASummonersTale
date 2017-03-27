@@ -541,7 +541,9 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\Trajan.spritefont" />
     <None Include="Content\GeonBit.UI\themes\hd\fonts\Bold.spritefont" />
     <None Include="Content\GeonBit.UI\themes\hd\fonts\Italic.spritefont" />
