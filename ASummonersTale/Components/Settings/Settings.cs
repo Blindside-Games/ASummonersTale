@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using log4net;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using log4net;
-using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ASummonersTale.Components.Settings
 {
@@ -68,7 +68,7 @@ namespace ASummonersTale.Components.Settings
         {
             bool valid = AllCategoriesPresent;
 
-            IEnumerable <PropertyInfo> properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(prop => prop.CustomAttributes.Any());
+            IEnumerable<PropertyInfo> properties = typeof(Settings).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(prop => prop.CustomAttributes.Any());
 
             log.Info("Reading keybindings");
             Bindings.ReadKeybindings(settingsIniFile);
@@ -88,7 +88,7 @@ namespace ASummonersTale.Components.Settings
 
                     switch (attribute.Type.Name)
                     {
-                      
+
                         case "Single":
                             {
                                 float value;
@@ -192,7 +192,20 @@ namespace ASummonersTale.Components.Settings
 
             internal List<Microsoft.Xna.Framework.Input.Keys> this[Action action]
             {
-                get => keyBindings[action];
+                get
+                {
+                    try
+                    {
+                        return keyBindings[action];
+                    }
+                    catch
+                    {
+                        log.Fatal($"Unable to get keybind for {action.ToString()}");
+
+                        return null;
+                    }
+
+                }
             }
 
             internal KeyValuePair<Action, List<Microsoft.Xna.Framework.Input.Keys>> this[Action a, List<Microsoft.Xna.Framework.Input.Keys> k]
@@ -217,7 +230,7 @@ namespace ASummonersTale.Components.Settings
 
                     int count = kvp.Value.Count();
 
-                    log.Debug($"Writing keybinds for {kvp.Key}. There are {count} keybindings for this key"); 
+                    log.Debug($"Writing keybinds for {kvp.Key}. There are {count} keybindings for this key");
 
                     for (int i = 0; i < count; i++)
                     {
@@ -251,7 +264,7 @@ namespace ASummonersTale.Components.Settings
                 foreach (var keybinding in keyBindingsFromSettingsFile)
                 {
                     string actionName = actionNameRegex.Match(keybinding).ToString().TrimEnd('=');
-                    log.Debug($"Reading ");
+                    log.Debug($"Reading key bindings for {actionName}");
 
 
                     string[] keys = keyBindingsRegex.Match(keybinding).ToString().TrimStart('=').Split(',');
@@ -263,6 +276,7 @@ namespace ASummonersTale.Components.Settings
 
                     foreach (var key in keys)
                     {
+                        log.Debug($"Found key {key}");
                         keyEnums.Add((Microsoft.Xna.Framework.Input.Keys)Enum.Parse(typeof(Microsoft.Xna.Framework.Input.Keys), key));
                     }
 
@@ -281,15 +295,15 @@ namespace ASummonersTale.Components.Settings
                 { Action.MoveMapDown, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Down } },
                 { Action.MoveMapLeft, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.Left } },
                 { Action.ToggleMap, new List<Microsoft.Xna.Framework.Input.Keys> { Microsoft.Xna.Framework.Input.Keys.M } }
-            }; 
+            };
         }
 
         internal enum Action
         {
-            MoveUp, 
+            MoveUp,
             MoveDown,
-            MoveLeft, 
-            MoveRight, 
+            MoveLeft,
+            MoveRight,
             MoveMapUp,
             MoveMapDown,
             MoveMapLeft,

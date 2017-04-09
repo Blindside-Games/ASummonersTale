@@ -4,6 +4,7 @@ using ASummonersTale.GameStates.Interfaces;
 using ASummonersTale.TileEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using static ASummonersTale.Components.Settings.Settings;
 
 namespace ASummonersTale.GameStates
@@ -34,14 +35,22 @@ namespace ASummonersTale.GameStates
 
         public override void Update(GameTime gameTime)
         {
-            if (InputHandler.IsKeybindReleased(GameReference.Settings.Bindings[Action.ToggleMap]))
+            try
             {
-                GameReference.WorldMapState.ConstructMap(currentMap, camera);
+                if (InputHandler.IsKeybindReleased(GameReference.Settings.Bindings[ASummonersTale.Components.Settings.Settings.Action.ToggleMap]))
+                {
+                    GameReference.WorldMapState.ConstructMap(currentMap, camera);
 
-                manager.PushState((WorldMapState)GameReference.WorldMapState, PlayerIndex.One);
+                    manager.PushState((WorldMapState)GameReference.WorldMapState, PlayerIndex.One);
+                }
+
+                base.Update(gameTime);
             }
-
-            base.Update(gameTime);
+            catch (Exception ex)
+            {
+                GameReference.Exit();
+            }
+           
         }
 
         public override void Draw(GameTime gameTime)
